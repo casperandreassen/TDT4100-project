@@ -1,13 +1,13 @@
 # TDT4100-project plan
 
-## Inventory management system 
+## Regningssystem 
 
-Planen er å lage en form for lagerbeholdningssystem for en nettbutikk hvor en bruker kan legge inn nye produkter med bilde, pris, spesifikasjoner etc. 
-Appliksjonen vil ha 3 hovedfunksjoner: 
+Planen er å lage et regningssystem hvor bruker har mulighet til å lage regninger fra et firma. Bruker kan legge inn Kunde/selger, alle produkter kunden har kjøpt med pris (med mulighet for å legge inn produkter så man slipper å legge inn samme flere ganger.), programmet regner ut totalpris, mva og har mulighet til å legge til eventuelle rabatter. Alle regninger som tidligere er laget og sendt er mulig å hente opp igjen fra tekstfil, men ikke mulighet til å endre etter sending. Man kan se totalt utestående, totalt fakturert for året og total margin for året på hovedsiden. Man kan lagre en regning under redigering før man sender den, og så hente denne opp igjen senere. 
 
-1. Oversikt over alle varer som er i systemet, med muligheten til å filtrere på kategori samt søke etter varenummer. Her kan man også fjerne/slette produkter fra databasen. (Klasse 1)
-2. Legge inn nye varer i databasen i et eget panel, hvor man kan legge inn bilde, pris, kost, mva prosent (her blir total mva på produkt regnet ut), spesifikasjoner (forenklet: Kun mulighet for lengde, bredde, høyde, vekt og produsent) og lagerbeholdning m.m. Denne dataen vil så bli skrevet til databasen og et varenummer blir generert automatisk, med tomme verider for data som ikke er lagt inn. (Klasse 2)
-3. Eksportere all data som er i databasen til excel-fil og regne ut total lagerbeholdning, total salgskost, se avanse på produkter og regne ut total mva regning for alle varer. (Klasse 3)
+
+1. Hoveklassen vil være en dataorientert-klasse ansvarlig for å lagre alle verdier som bruker legger inn. Dette vil lagres til en txt fil med en struktur som gir mening for denne. Det vil i utgangspunktet være 2 forskjellige tekstfiler som er ansvarlig for å lagre data fra objektene. En som lagrer ferdig sendte fakturaer og en som lagrer uferdige fakturaer. 
+2. En annen klasse vil håndtere kalkulasjonene som er nødvendig for å regne ut mva, total og evt rabatt. Denne vil også ta seg av å regne ut totalt utestående på fakturaer samt total for året.
+3. En tredje "hjelpeklasse" vil være ta seg av å eksportere en faktura fra programmet til PDF slik at denne kan sendes til en kunde.  
 
 ## Testing
 
@@ -15,4 +15,5 @@ For å teste appen vil det være relevant å legge inn ulike data som kanksje ik
 
 ## Andre teknologier
 
-Som database velger jeg å bruke SQLite (https://www.sqlite.org/index.html), jeg bruker java sitt innebygde object java.sql for å interagere med databasen. Databasen og alle constrainst/datatyper samt tables/rows for denne lager jeg på forhand og klassen kan kun skrive til og fjerne elementer fra databasen. For å eksportere til excel-fil bruker jeg Apache POI biblioteket (https://poi.apache.org) eller easyXLS for å konvertere data som er i databasen til excel fil. Brukergrensesnittet vil lages i JavaFX. Bruker maven for filstruktur samt for å bygge prosjektet. 
+Bruker maven for å enklet kunne bruke Apache PDF box for å eksportere fakturaer som pdf samt for å forenkle oppsett av prosjektet.
+

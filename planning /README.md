@@ -17,3 +17,15 @@ For å teste appen vil det være relevant å legge inn ulike data som kanksje ik
 
 Bruker maven for å enklet kunne bruke Apache PDF box for å eksportere fakturaer som pdf samt for å forenkle oppsett av prosjektet.
 
+
+
+
+## Lover og regler som følges 
+
+https://www.sendregning.no/faktura/fakturanummer-krav/
+
+En nummerserie for en bedrift. Etter loven skal en nummersere velges når første faktura opprettes og man kan ikke gå vekk fra denne, da samtidig ikke slette fakturaer når en er sendt. 
+
+altinn.no/starte-og-drive/regnskap-og-revisjon/regnskap/faktura-salgsdokumentasjon/
+
+Følge retningslinjer for hva en faktura skal inneholde, slik alltinn har beskrevet det. 

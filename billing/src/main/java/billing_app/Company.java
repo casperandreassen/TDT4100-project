@@ -6,7 +6,8 @@ import java.util.Collection;
 public class Company {
     private String companyName;
     OrganizationalId companyOrganizationalId; 
-    private Address companyAddress;
+    Address companyAddress;
+    /* This should be a Path */
     private String companyLogoPath; 
     private int currentBillId;
     Collection<Item> allCompanyItems; 
@@ -58,5 +59,22 @@ public class Company {
         } else {
             throw new IllegalStateException("Bill is missing legally required fields.");
         }
+    }
+
+    public void saveCompanyState() {
+        SaveState savestate = new SaveState(this);
+        savestate.saveCurrentState();
+    }
+
+    public String getCompanyName() {
+        return this.companyName;
+    }
+
+    public String getCompanyLogoPath() {
+        return this.companyLogoPath;
+    }
+
+    public int getCurrentBillId() {
+        return this.currentBillId;
     }
 }

@@ -19,5 +19,6 @@ public class createCompleteBillTest {
         assertThrows(IllegalArgumentException.class, () -> {
             company1.addCustomerToCompany(customer1);
         });
+        company1.saveCompanyState();
     }
 }

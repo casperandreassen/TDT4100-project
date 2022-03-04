@@ -1,5 +1,7 @@
 package billing_app;
 
+import java.util.stream.IntStream;
+
 public class OrganizationalId {
 
     private String organizationalId;
@@ -7,24 +9,41 @@ public class OrganizationalId {
     public OrganizationalId(String organizationalId) {
         if (isValid(organizationalId)) {
             this.organizationalId = organizationalId;
+        } else {
+            throw new IllegalArgumentException("Invalid organizationalId");
         }
     }
-/*Validate "organisasjonsnummer" using standard defines by Brønnøysundregisterene https://www.brreg.no/om-oss/oppgavene-vare/alle-registrene-vare/om-enhetsregisteret/organisasjonsnummeret/ */
+
+    public String getOrganizationalId() {
+        return this.organizationalId;
+    }
+
+
+    /*Validate "organisasjonsnummer" using standard defined by Brønnøysundregisterene https://www.brreg.no/om-oss/oppgavene-vare/alle-registrene-vare/om-enhetsregisteret/organisasjonsnummeret/ */
     private boolean isValid(String organizationalId) {
         if (organizationalId.length() != 9) {
             return false; 
         }
         int[] weights = {3, 2, 7, 6, 5, 4, 3, 2};
-        int[] numbers = new int[8];
         for (int i = 0; i < 8; i++) {
-            numbers[i] = organizationalId.charAt(i) * weights[i];
+            weights[i] = Integer.parseInt(Character.toString(organizationalId.charAt(i))) * weights[i];
         }
-        System.out.println(numbers);
-        return true;
-    }
-
-    public static void main(String[] args) {
-        OrganizationalId ny = new OrganizationalId("123456785");
-    }
-    
+        int sum = IntStream.of(weights).sum();
+        
+        /*Modulus 11*/
+        int mod = sum % 11; 
+        int controlDigit;
+        if (mod == 0) {
+            controlDigit = 0; 
+        } else if (mod == 1) {
+            return false; 
+        } else {
+            controlDigit = 11 - mod;
+        }
+        if (Integer.toString(controlDigit).equals(Character.toString(organizationalId.charAt(8)))) {
+            return true;
+        } else {
+            return false;
+        }
+    }    
 }

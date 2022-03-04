@@ -29,3 +29,7 @@ En nummerserie for en bedrift. Etter loven skal en nummersere velges når først
 altinn.no/starte-og-drive/regnskap-og-revisjon/regnskap/faktura-salgsdokumentasjon/
 
 Følge retningslinjer for hva en faktura skal inneholde, slik alltinn har beskrevet det. 
+
+
+Orgnummer 
+https://no.wikipedia.org/wiki/MOD11

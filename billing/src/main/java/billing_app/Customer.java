@@ -1,10 +1,28 @@
 package billing_app;
 
-import java.util.Collection;
-
 public class Customer {
+
     private String name; 
-    private String address; 
-    private OrganizationalId organizationalId;
-    private Collection<Bill> customerBills;  
+    Address address;
+    private OrganizationalId CustomerOrganizationalId;
+    
+    public Customer(String name, Address address, String organizationalId) {
+        if (name != null && address != null) {
+            this.name = name;
+            this.address = address;
+            this.CustomerOrganizationalId = new OrganizationalId(organizationalId);
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public OrganizationalId getCustomerOrganizationalId() {
+        return CustomerOrganizationalId;
+    }
 }

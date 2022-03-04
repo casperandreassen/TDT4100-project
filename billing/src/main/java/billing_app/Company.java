@@ -1,33 +1,34 @@
 package billing_app;
 
+import java.util.ArrayList;
 import java.util.Collection;
-
-import javax.management.ObjectInstance;
-import javax.management.relation.InvalidRelationTypeException;
 
 public class Company {
     private String companyName;
-    private OrganizationalId organizationalId; 
+    OrganizationalId companyOrganizationalId; 
+    private Address companyAddress;
     private String companyLogoPath; 
-    private int lastUsedBillId; 
-    private Collection<Item> allCompanyItems; 
-    private Collection<Customer> allCompanyCustomers; 
-    private Collection<Bill> companySentBills;
-    private Collection<Bill> companyUnfinishedBills;
+    private int currentBillId;
+    Collection<Item> allCompanyItems; 
+    Collection<Customer> allCompanyCustomers; 
+    Collection<Bill> companySentBills;
+    Collection<Bill> companyUnfinishedBills;
     
-    public Company(String companyName, String organizationalId, int startingBillId) throws IllegalArgumentException {
-        if (!(companyName == null) && startingBillId > 0 && validOrganizationalId()) {
+    public Company(String companyName, String organizationalId, int startingBillId, Address address) throws IllegalArgumentException {
+        if (!(companyName == null) && startingBillId > 0) {
             this.companyName = companyName;
-            this.lastUsedBillId = startingBillId;
+            this.currentBillId = startingBillId;
+            this.companyAddress = address;
+            this.companyOrganizationalId = new OrganizationalId(organizationalId);
+            this.allCompanyItems = new ArrayList<Item>();
+            this.allCompanyCustomers = new ArrayList<Customer>();
+            this.companySentBills = new ArrayList<Bill>();
+            this.companyUnfinishedBills = new ArrayList<Bill>();
         } else {
             throw new IllegalArgumentException("Company needs valid name and starting billID");
         }
     }
-
-    private boolean validOrganizationalId() {
-
-    }
-
+    
     public void addCustomerToCompany(Customer customer) throws IllegalArgumentException {
         if(!this.allCompanyCustomers.contains(customer)) {
             this.allCompanyCustomers.add(customer);
@@ -43,14 +44,19 @@ public class Company {
             throw new IllegalArgumentException("Duplicate item");
         }
     }
-    /* Possibly add check for if bill already is in database*/
-    public void addBillToCompany(Bill bill) {
-        if (bill.finished) {
-            this.companySentBills.add(bill);
-        } else {
-            this.companyUnfinishedBills.add(bill);
-        }
+
+    /* Possibly add check for if bill already is in database */
+    public void addUnfinishedBill(Bill bill) {
+        companyUnfinishedBills.add(bill);
     }
 
-
+    public void sendFinishedBill(Bill bill, int billId) {
+        if (bill.legalState()) {
+            bill.setBillId(billId);
+            this.currentBillId++;
+            this.companySentBills.add(bill);
+        } else {
+            throw new IllegalStateException("Bill is missing legally required fields.");
+        }
+    }
 }

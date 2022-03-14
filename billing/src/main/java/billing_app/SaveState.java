@@ -1,5 +1,6 @@
 package billing_app;
 
+import java.io.Console;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,8 +10,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
-import org.apache.commons.io.FileUtils;
+import javafx.scene.transform.Scale;
 
 /*This class aims to provide methods for saving the state of all relevant Java classes, and provide methods for creating the objects again on startup. */
 
@@ -25,12 +27,15 @@ public class SaveState {
         this.allCompanies.add(company);
     }
 
+    public SaveState() {
+        this.currentPath = FileSystems.getDefault().getPath(System.getProperty("user.dir"));
+    }
+
     public void saveCurrentState() {
         /* Copy last instace to old directory */
 
         File lastSave = new File(this.currentPath.toString() + "/store/instance/");
         File locationOldSaves = new File(this.currentPath.toString() + "/store/old/");
-        FileUtils.moveDirectory()
         File currentState = new File(this.currentPath.toString() + "/store/instance/" + today + ".txt");
         try {
             currentState.createNewFile();
@@ -38,21 +43,16 @@ public class SaveState {
             e.printStackTrace();
         }
         try {
-            FileWriter writeCurrentState = new FileWriter(currentPath.toString() + "/" + today + ".txt");
+            FileWriter writeCurrentState = new FileWriter(currentPath.toString() + "/store/instance/save.txt");
             for (Company company : allCompanies) {
-                writeCurrentState.write("START," + company.toString() + "\n");
-                writeCurrentState.write("String,companyName," + company.getCompanyName() + "\n");
-                writeCurrentState.write("String,companyLogoPath," + company.getCompanyLogoPath() + "\n");
-                writeCurrentState.write("int,currentBillId," + company.getCurrentBillId() + "\n");
-                writeCurrentState.write("START," + company.companyOrganizationalId.toString() + "\n");
-                writeCurrentState.write("String,organizationalId," + company.companyOrganizationalId.getOrganizationalId() + "\n");
-                writeCurrentState.write("END," + company.companyOrganizationalId.toString() + "\n");
-                writeCurrentState.write("START," + company.companyAddress.toString() + "\n");
-                writeCurrentState.write("String,address," + company.companyAddress.getAddress() + "\n");
-                writeCurrentState.write("String,postalCode," + company.companyAddress.getPostalCode() + "\n");
-                writeCurrentState.write("String,city," + company.companyAddress.getCity() + "\n");
-                writeCurrentState.write("String,country," + company.companyAddress.getCountry() + "\n");
-                writeCurrentState.write("END," + company.companyAddress.toString() + "\n");
+                writeCurrentState.write("companyName," + company.getCompanyName() + "\n");
+                writeCurrentState.write("companyLogoPath," + company.getCompanyLogoPath() + "\n");
+                writeCurrentState.write("currentBillId," + company.getCurrentBillId() + "\n");
+                writeCurrentState.write("organizationalId," + company.companyOrganizationalId.getOrganizationalId() + "\n");
+                writeCurrentState.write("address," + company.companyAddress.getAddress() + "\n");
+                writeCurrentState.write("postalCode," + company.companyAddress.getPostalCode() + "\n");
+                writeCurrentState.write("city," + company.companyAddress.getCity() + "\n");
+                writeCurrentState.write("country," + company.companyAddress.getCountry() + "\n");
             }
             /*Save item data*/
 
@@ -64,18 +64,23 @@ public class SaveState {
 
     public void getPastState() {
         try {
-            Path path = FileSystems.getDefault().getPath("/Users/casper/Documents/code/TDT4100-project/billing/store/static_files", "postnummer.txt");
-            List<String> postnummer = Files.readAllLines(path);
-            for (String postnummere : postnummer) {
-                String[] tmp = postnummere.split(",");
-                this.postalCodes.put(tmp[0], tmp[1]);
+            Path path = FileSystems.getDefault().getPath(currentPath.toString() + "/billing/store/instance/save.txt");
+            List<String> companyData = Files.readAllLines(path);
+            String companyName, companyLogoPath, organizationalId, address, postalCode, city, country;
+            int currentBillId;
+
+            for (String data : companyData) {
+                String data1[] = data.split(",");
+                System.out.println(data1[1]);
             }
         } catch (IOException e) {
-            System.out.println("Failed");
+            e.printStackTrace();
         }
     }
 
 
     public static void main(String[] args) {
+        SaveState ny = new SaveState();
+        ny.getPastState();
     }
 }

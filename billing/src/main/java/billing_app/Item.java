@@ -3,11 +3,11 @@ package billing_app;
 public class Item {
     private String name; 
     private double price; 
-    private int taxOnItem; 
+    private double taxOnItem; 
     private String category;
 
 
-    public Item(String name, double price, int taxOnItem, String category) {
+    public Item(String name, double price, double taxOnItem, String category) {
         if (name != null && price > 0 && taxOnItem > 0 && category != null) {
             this.name = name; 
             this.price = price; 
@@ -26,7 +26,7 @@ public class Item {
     }
 
 
-    public int getTaxOnItem() {
+    public double getTaxOnItem() {
         return taxOnItem;
     }
 

@@ -19,6 +19,18 @@ public class createCompleteBillTest {
         assertThrows(IllegalArgumentException.class, () -> {
             company1.addCustomerToCompany(customer1);
         });
-        company1.saveCompanyState();
+        Address customerAddress2 = new Address("Høgskoleringen 1", "7050", "Trondheim", "Norway");
+        Customer customer2 = new Customer("Elise morgenquist", customerAddress2, "548052505");
+        company1.addCustomerToCompany(customer2);
+        assertEquals(true, company1.allCompanyCustomers.contains(customer2));
+        assertThrows(IllegalArgumentException.class, () -> {
+            company1.addCustomerToCompany(customer2);
+        });
+        Item sjokolade = new Item("Nidar Sjokolade", 29.90, 12.5, "food");
+        company1.addItemToCompany(sjokolade);
+        assertEquals(true, company1.allCompanyItems.contains(sjokolade));
+        Bill regning = new Bill(company1);
+        regning.addItemToBill(sjokolade);
+        regning.addCustomerToBill(customer2);
     }
 }

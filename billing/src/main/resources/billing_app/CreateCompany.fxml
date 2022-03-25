@@ -6,18 +6,18 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="496.0" prefWidth="210.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.controllers.CompanyController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="496.0" prefWidth="210.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.controllers.CreateCompanyController">
    <children>
       <Label layoutX="33.0" layoutY="62.0" text="Create new company">
          <font>
             <Font name="Geeza Pro Regular" size="13.0" />
          </font>
       </Label>
-      <TextField layoutX="27.0" layoutY="105.0" />
+      <TextField fx:id="companyName" layoutX="27.0" layoutY="105.0" />
       <TextField fx:id="orgId" layoutX="25.0" layoutY="149.0" onKeyTyped="#handleOrganizationalIdChange" />
-      <TextField layoutX="24.0" layoutY="193.0" />
+      <TextField fx:id="startingId" layoutX="24.0" layoutY="193.0" />
       <TextField fx:id="address" layoutX="25.0" layoutY="236.0" />
-      <TextField fx:id="postalCode" layoutX="26.0" layoutY="275.0" />
+      <TextField fx:id="postalCode" layoutX="26.0" layoutY="275.0" onKeyTyped="#handlePostalCodeInput" />
       <Label layoutX="28.0" layoutY="93.0" text="Company name">
          <font>
             <Font size="9.0" />
@@ -60,15 +60,15 @@
             <Font size="9.0" />
          </font>
       </Label>
-      <Button layoutX="146.0" layoutY="386.0" mnemonicParsing="false" text="Choose">
+      <Button fx:id="selectFileButton" layoutX="146.0" layoutY="386.0" mnemonicParsing="false" onAction="#handleLogoSelect" text="Choose">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
       <Button layoutX="48.0" layoutY="431.0" mnemonicParsing="false" onAction="#createCompany" text="Create Company" />
-      <Label fx:id="validOrgId" layoutX="184.0" layoutY="158.0" prefHeight="8.0" prefWidth="33.0" text="Invalid">
+      <Label fx:id="validOrgId" layoutX="154.0" layoutY="138.0" prefHeight="8.0" prefWidth="33.0" text="Invalid" textFill="RED">
          <font>
-            <Font size="6.0" />
+            <Font size="9.0" />
          </font>
       </Label>
    </children>

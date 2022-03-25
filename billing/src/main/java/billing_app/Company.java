@@ -1,33 +1,25 @@
 package billing_app;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class Company {
     private String companyName;
-    OrganizationalId companyOrganizationalId; 
-    Address companyAddress;
-    /* This should be a Path */
-    private String companyLogoPath; 
+    private OrganizationalId companyOrganizationalId; 
+    private Address companyAddress;
+    private Path companyLogoPath; 
     private int currentBillId;
     Collection<Item> allCompanyItems; 
     Collection<Customer> allCompanyCustomers; 
     Collection<Bill> companySentBills;
     Collection<Bill> companyUnfinishedBills;
     
-    public Company(String companyName, OrganizationalId organizationalId, int startingBillId, Address address) throws IllegalArgumentException {
-        if (!(companyName == null) && startingBillId > 0) {
-            this.companyName = companyName;
-            this.currentBillId = startingBillId;
-            this.companyAddress = address;
-            this.companyOrganizationalId = organizationalId;
-            this.allCompanyItems = new ArrayList<Item>();
-            this.allCompanyCustomers = new ArrayList<Customer>();
-            this.companySentBills = new ArrayList<Bill>();
-            this.companyUnfinishedBills = new ArrayList<Bill>();
-        } else {
-            throw new IllegalArgumentException("Company needs valid name and starting billID");
-        }
+    public Company() {
+        this.allCompanyItems = new ArrayList<Item>();
+        this.allCompanyCustomers = new ArrayList<Customer>();
+        this.companySentBills = new ArrayList<Bill>();
+        this.companyUnfinishedBills = new ArrayList<Bill>();
     }
     
     public void addCustomerToCompany(Customer customer) throws IllegalArgumentException {
@@ -70,11 +62,40 @@ public class Company {
         return this.companyName;
     }
 
-    public String getCompanyLogoPath() {
+    public void setCompanyName(String name) {
+        this.companyName = name; 
+    }
+
+    public Path getCompanyLogoPath() {
         return this.companyLogoPath;
+    }
+
+    public void setCompanyLogoPath(Path newPath) {
+        this.companyLogoPath = newPath;
     }
 
     public int getCurrentBillId() {
         return this.currentBillId;
     }
+
+    public void setCurrentBillId(int startingBillId) {
+        this.currentBillId = startingBillId;
+    }
+
+    public Address getCompanyAddress() {
+        return this.companyAddress;
+    }
+
+    public void setCompanyAddress(Address companyAddress) {
+        this.companyAddress = companyAddress;
+    }
+
+    public OrganizationalId getOrganizationalId() {
+        return this.companyOrganizationalId;
+    }
+
+    public void setOriganizationalId(OrganizationalId companyOrgId) {
+        this.companyOrganizationalId = companyOrgId;
+    }
+
 }

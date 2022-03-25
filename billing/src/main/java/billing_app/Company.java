@@ -15,12 +15,12 @@ public class Company {
     Collection<Bill> companySentBills;
     Collection<Bill> companyUnfinishedBills;
     
-    public Company(String companyName, String organizationalId, int startingBillId, Address address) throws IllegalArgumentException {
+    public Company(String companyName, OrganizationalId organizationalId, int startingBillId, Address address) throws IllegalArgumentException {
         if (!(companyName == null) && startingBillId > 0) {
             this.companyName = companyName;
             this.currentBillId = startingBillId;
             this.companyAddress = address;
-            this.companyOrganizationalId = new OrganizationalId(organizationalId);
+            this.companyOrganizationalId = organizationalId;
             this.allCompanyItems = new ArrayList<Item>();
             this.allCompanyCustomers = new ArrayList<Customer>();
             this.companySentBills = new ArrayList<Bill>();

@@ -1,6 +1,10 @@
 package billing_app;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,7 +22,6 @@ public class Address {
     /* Plan is to add full address validation in this class, see https://www.bring.no/tjenester/adressetjenester/postnummer for implementation. */
 
     public Address(String address, String postalCode, String city, String country) {
-        createHashMap();
         if (address != null && postalCode != null && city != null && country != null) {
             this.address = address;
             this.postalCode = postalCode;
@@ -29,12 +32,9 @@ public class Address {
 
     public void createHashMap() {
         try {
-            Path path = FileSystems.getDefault().getPath("/Users/casper/Documents/code/TDT4100-project/billing/store/static_files", "postnummer.txt");
-            List<String> postnummer = Files.readAllLines(path);
-            for (String postnummere : postnummer) {
-                String[] tmp = postnummere.split(",");
-                this.postalCodes.put(tmp[0], tmp[1]);
-            }
+            FileReader fr = new FileReader(new File(FileSystems.getDefault().getPath(System.getProperty("user.dir")) + "/store/static/", "postnummer.txt"));
+            BufferedReader reader = new BufferedReader(fr);
+            System.out.println(reader.read());
         } catch (IOException e) {
             System.out.println("Failed");
         }
@@ -58,5 +58,6 @@ public class Address {
 
     public static void main(String[] args) {
         Address customerAddress = new Address("Rekkeviksgate 68C", "3260", "Larvik", "Norway");
+        customerAddress.createHashMap();
     }
 }

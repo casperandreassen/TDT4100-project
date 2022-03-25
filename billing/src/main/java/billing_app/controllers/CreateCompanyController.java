@@ -31,7 +31,6 @@ public class CreateCompanyController {
     Path companyLogoPath;
     Company createdCompany;
 
-
     @FXML
     private void handleOrganizationalIdChange() {
         String tmpOrgId = orgId.getText();
@@ -42,7 +41,6 @@ public class CreateCompanyController {
             updateValidOrgId("Invalid");
         }   
     }
-
 
     @FXML
     private void updateValidOrgId(String validity) {
@@ -80,6 +78,5 @@ public class CreateCompanyController {
         createdCompany.setOriganizationalId(companyOrgId);
         MainApp.printToConsole(createdCompany.toString());
     }
-
 }
 

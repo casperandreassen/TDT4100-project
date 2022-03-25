@@ -10,10 +10,10 @@ public class Company {
     private Address companyAddress;
     private Path companyLogoPath; 
     private int currentBillId;
-    Collection<Item> allCompanyItems; 
-    Collection<Customer> allCompanyCustomers; 
-    Collection<Bill> companySentBills;
-    Collection<Bill> companyUnfinishedBills;
+    public Collection<Item> allCompanyItems; 
+    public Collection<Customer> allCompanyCustomers; 
+    public Collection<Bill> companySentBills;
+    public Collection<Bill> companyUnfinishedBills;
     
     public Company() {
         this.allCompanyItems = new ArrayList<Item>();

@@ -30,7 +30,7 @@ public class OrganizationalId {
         }
         int sum = IntStream.of(weights).sum();
         
-        /*Modulus 11*/
+        /*Mod 11*/
         int mod = sum % 11; 
         int controlDigit;
         if (mod == 0) {

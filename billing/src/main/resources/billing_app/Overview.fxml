@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.Pane?>
-
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField layoutX="26.0" layoutY="77.0" />
-      <TextField layoutX="26.0" layoutY="112.0" />
-      <TextField layoutX="26.0" layoutY="149.0" />
-      <TextField layoutX="26.0" layoutY="188.0" />
+      <ScrollPane fx:id="billOverviewScrollPanebillOverviewScrollPane" layoutX="3.0" layoutY="36.0" prefHeight="338.0" prefWidth="400.0" />
+      <TabPane fx:id="companiesTabPanecompaniesTabPane" layoutY="5.0" prefHeight="33.0" prefWidth="403.0" tabClosingPolicy="UNAVAILABLE" />
    </children>
 </Pane>

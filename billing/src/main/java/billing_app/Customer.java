@@ -6,11 +6,11 @@ public class Customer {
     Address address;
     private OrganizationalId CustomerOrganizationalId;
     
-    public Customer(String name, Address address, String organizationalId) {
+    public Customer(String name, Address address, OrganizationalId orgId) {
         if (name != null && address != null) {
             this.name = name;
             this.address = address;
-            this.CustomerOrganizationalId = new OrganizationalId(organizationalId);
+            this.CustomerOrganizationalId = orgId;
         }
     }
 

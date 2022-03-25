@@ -90,12 +90,12 @@ public class Company {
         this.companyAddress = companyAddress;
     }
 
-    public OrganizationalId getOrganizationalId() {
-        return this.companyOrganizationalId;
-    }
-
     public void setOriganizationalId(OrganizationalId companyOrgId) {
         this.companyOrganizationalId = companyOrgId;
+    }
+
+    public String getOrganizationalId() {
+        return this.companyOrganizationalId.getOrganizationalId();
     }
 
 }

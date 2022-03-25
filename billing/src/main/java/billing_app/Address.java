@@ -52,7 +52,11 @@ public class Address {
     }
 
     public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+        if (postalCodes.get(postalCode) != null) {
+            this.postalCode = postalCode;
+            this.city = postalCodes.get(postalCode);
+            this.country = "Norway";
+        }
     }
 
     public String getCity() {

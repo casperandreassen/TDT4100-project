@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.Pane;
 
 public class OverviewController {
     @FXML
@@ -26,8 +27,9 @@ public class OverviewController {
 
     public void displayCompanySentBillsInScrollPane() {
         for (Bill bill : currentCompany.companySentBills) {
-            // billOverviewScrollPane.getChildren().add(new Pane());
-            billOverviewScrollPane.setContent(new Label(bill.toString()));
+            Pane billPaneTemplate = new Pane();
+            billPaneTemplate.setPrefSize(290, 60);
+            /* billOverviewScrollPane.setContent(new ); */
         }
     }
 

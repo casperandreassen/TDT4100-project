@@ -1,4 +1,4 @@
-package billing_app;
+package billing_app.items;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -8,6 +8,8 @@ import java.nio.file.FileSystems;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import billing_app.MainApp;
 
 public class Address {
 
@@ -21,9 +23,8 @@ public class Address {
         createHashMap();
     }
 
-    /* Takes around 4-5m/s to create the hashmap */
-
-    public void createHashMap() {
+    /* Takes around 4-5 ms to create the hashmap */
+    private void createHashMap() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(FileSystems.getDefault().getPath(System.getProperty("user.dir")) + "/billing/store/static/postnummer.txt"));
 
@@ -33,7 +34,7 @@ public class Address {
             
             reader.close();
         } catch (FileNotFoundException e) {
-            MainApp.printToConsole("static store file not foundd");
+            
         } catch (IOException e) {
             MainApp.printToConsole("IO Error");
         }

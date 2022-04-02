@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import billing_app.logic.Company;
+
 public class MainApp extends Application {
 
     public static Collection<Company> companies = new ArrayList<Company>();

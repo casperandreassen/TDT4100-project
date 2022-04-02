@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import billing_app.items.OrganizationalId;
+
 public class OrganizationalIdTest {
     
     /* Testing various known invalid numbers */

@@ -1,4 +1,4 @@
-package billing_app;
+package billing_app.saving;
 
 import java.io.Console;
 import java.io.File;
@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import billing_app.Logic.Company;
 import javafx.scene.transform.Scale;
 
 /*This class aims to provide methods for saving the state of all relevant Java classes, and provide methods for creating the objects again on startup. */

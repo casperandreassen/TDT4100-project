@@ -1,4 +1,4 @@
-package billing_app;
+ package billing_app;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,6 +9,13 @@ import java.util.GregorianCalendar;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import billing_app.items.Address;
+import billing_app.items.Bill;
+import billing_app.items.Item;
+import billing_app.items.OrganizationalId;
+import billing_app.logic.Company;
+import billing_app.logic.Customer;
 
 public class LogicTests {
 
@@ -58,7 +65,6 @@ public class LogicTests {
         date4 = new GregorianCalendar(2022, 10, 7);
     }
 
-
     @Test
     public void testItem() {
         assertEquals("Kjøttboller", testItem.getName());
@@ -102,9 +108,8 @@ public class LogicTests {
         assertThrows(IllegalArgumentException.class, () -> {
             testBill.addDateOfSale(date4);
         });
-
-
-
-
+        assertThrows(IllegalArgumentException.class, () -> {
+            testBill.addDueDate(date2);
+        });
     }
 }

@@ -1,10 +1,9 @@
-package billing_app;
+package billing_app.logic;
 
-public class Customer {
+import billing_app.items.Address;
+import billing_app.items.OrganizationalId;
 
-    private String name; 
-    Address address;
-    private OrganizationalId CustomerOrganizationalId;
+public class Customer extends Business{
     
     public Customer(String name, Address address, OrganizationalId orgId) {
         if (name != null && address != null) {

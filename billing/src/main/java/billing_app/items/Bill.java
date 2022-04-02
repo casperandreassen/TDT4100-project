@@ -1,14 +1,19 @@
-package billing_app;
+package billing_app.items;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import billing_app.logic.Company;
+import billing_app.logic.Customer;
+
+import billing_app.items.Item;
+
 public class Bill {
 
 
-    /* Dates should be an instance of GregorianCalendar https://docs.oracle.com/javase/7/docs/api/java/util/GregorianCalendar.html */
+    /* Dates are an instance of GregorianCalendar since this is the non depreciated version */
 
     private int billId; 
     private GregorianCalendar dateOfSale;  

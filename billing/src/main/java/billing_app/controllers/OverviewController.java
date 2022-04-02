@@ -1,8 +1,8 @@
 package billing_app.controllers;
 
-import billing_app.Bill;
-import billing_app.Company;
 import billing_app.MainApp;
+import billing_app.items.Bill;
+import billing_app.logic.Company;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;

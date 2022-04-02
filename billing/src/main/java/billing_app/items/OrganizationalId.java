@@ -1,4 +1,4 @@
-package billing_app;
+package billing_app.items;
 
 import java.util.stream.IntStream;
 

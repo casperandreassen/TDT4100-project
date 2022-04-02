@@ -4,9 +4,9 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="697.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ScrollPane fx:id="billOverviewScrollPanebillOverviewScrollPane" layoutX="3.0" layoutY="36.0" prefHeight="338.0" prefWidth="400.0" />
+      <ScrollPane fx:id="billOverviewScrollPanebillOverviewScrollPane" hbarPolicy="NEVER" hmin="500.0" layoutX="3.0" layoutY="36.0" prefHeight="338.0" prefWidth="400.0" vmin="300.0" />
       <TabPane fx:id="companiesTabPanecompaniesTabPane" layoutY="5.0" prefHeight="33.0" prefWidth="403.0" tabClosingPolicy="UNAVAILABLE" />
    </children>
 </Pane>

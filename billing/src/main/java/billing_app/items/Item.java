@@ -1,4 +1,4 @@
-package billing_app;
+package billing_app.items;
 
 public class Item {
     private String name; 

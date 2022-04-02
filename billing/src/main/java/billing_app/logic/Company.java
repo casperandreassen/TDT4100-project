@@ -1,13 +1,15 @@
-package billing_app;
+package billing_app.logic;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Company {
-    private String companyName;
-    private OrganizationalId companyOrganizationalId; 
-    private Address companyAddress;
+import billing_app.items.Bill;
+import billing_app.items.Item;
+import billing_app.saving.SaveState;
+
+public class Company extends Business{
+
     private Path companyLogoPath; 
     private int currentBillId;
     public Collection<Item> allCompanyItems; 
@@ -58,14 +60,6 @@ public class Company {
         savestate.saveCurrentState();
     }
 
-    public String getCompanyName() {
-        return this.companyName;
-    }
-
-    public void setCompanyName(String name) {
-        this.companyName = name; 
-    }
-
     public Path getCompanyLogoPath() {
         return this.companyLogoPath;
     }
@@ -82,20 +76,6 @@ public class Company {
         this.currentBillId = startingBillId;
     }
 
-    public Address getCompanyAddress() {
-        return this.companyAddress;
-    }
 
-    public void setCompanyAddress(Address companyAddress) {
-        this.companyAddress = companyAddress;
-    }
-
-    public void setOriganizationalId(OrganizationalId companyOrgId) {
-        this.companyOrganizationalId = companyOrgId;
-    }
-
-    public String getOrganizationalId() {
-        return this.companyOrganizationalId.getOrganizationalId();
-    }
 
 }

@@ -21,7 +21,7 @@ public class CreateCompanyController {
     private TextField companyName, startingId, orgId, address, postalCode, city, country;
 
     @FXML 
-    private Label validOrgId;
+    private Label validOrgId, logoPath;
 
     @FXML
     private Button selectFileButton;
@@ -29,7 +29,7 @@ public class CreateCompanyController {
     OrganizationalId companyOrgId;
     Address companyAddress;
     Path companyLogoPath;
-    Company createdCompany;
+    Company createdCompany = new Company();
 
     @FXML
     private void handleOrganizationalIdChange() {
@@ -54,6 +54,11 @@ public class CreateCompanyController {
         fileChooser.setTitle("Select company logo");
         File selectedFile = fileChooser.showOpenDialog(stage);
         companyLogoPath = Paths.get(selectedFile.getAbsolutePath());
+        if (createdCompany.isValidLogo(companyLogoPath)) {
+            logoPath.setText(companyLogoPath.toString().split("\\/(.*)")[0]);
+        } else {
+            logoPath.setText("Invalid file");
+        }
     }
 
     @FXML
@@ -70,9 +75,8 @@ public class CreateCompanyController {
 
     @FXML
     private void createCompany() {
-        createdCompany = new Company();
-        createdCompany.setCompanyAddress(companyAddress);
-        createdCompany.setCompanyName(companyName.getText());
+        createdCompany.setAddress(companyAddress);
+        createdCompany.setName(companyName.getText());
         createdCompany.setCurrentBillId(Integer.parseInt(startingId.getText()));
         createdCompany.setCompanyLogoPath(companyLogoPath);
         createdCompany.setOriganizationalId(companyOrgId);

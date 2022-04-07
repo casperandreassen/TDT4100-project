@@ -35,7 +35,7 @@ public class LogicTests {
     @BeforeEach
     public void initCompany() {
         testCompany = new Company(); 
-        testCompany.setCompanyName("Statoil");
+        testCompany.setName("Statoil");
         testCompany.setOriganizationalId(testOrgId);
         testItem = new Item("Kjøttboller", 29.90, 12.0, "Canned foods");
         testItem2 = new Item("iPhone 13 Pro Max", 13900.0, 25.0, "Mobile Phones");

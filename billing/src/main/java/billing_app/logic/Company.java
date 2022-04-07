@@ -1,12 +1,15 @@
 package billing_app.logic;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import billing_app.MainApp;
 import billing_app.items.Bill;
 import billing_app.items.Item;
-import billing_app.saving.SaveState;
 
 public class Company extends Business{
 
@@ -55,10 +58,10 @@ public class Company extends Business{
         }
     }
 
-    public void saveCompanyState() {
+    /* public void saveCompanyState() {
         SaveState savestate = new SaveState(this);
         savestate.saveCurrentState();
-    }
+    } */
 
     public Path getCompanyLogoPath() {
         return this.companyLogoPath;
@@ -76,6 +79,20 @@ public class Company extends Business{
         this.currentBillId = startingBillId;
     }
 
+    public boolean isValidLogo(Path companyLogoPath) {
+        try {
+            List<String> acceptedFileTypes = new ArrayList<String>(Arrays.asList("jpg", "jpeg", "png"));
+            if (acceptedFileTypes.contains(companyLogoPath.toString().split("\\.(.*)")[0])) return true;
+            return false;
+        } catch (Exception e) {
+            MainApp.printToConsole(e.toString());
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("/Users/casper/Desktop/IMG_4204.PNG".split('\.(.*)')[0]);
+    }
 
 
 }

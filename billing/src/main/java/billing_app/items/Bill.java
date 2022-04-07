@@ -21,7 +21,7 @@ public class Bill {
     private Company sellingCompany;
     private Customer customer;
     private GregorianCalendar dateOfDelivery; 
-    private GregorianCalendar dueDate;
+    private GregorianCalendar dueDate = new GregorianCalendar(2022, 05, 21);
 
     /* For creating an empty bill */
     public Bill(Company sellingCompany) {
@@ -57,7 +57,7 @@ public class Bill {
     }
 
     public void addDateOfSale(GregorianCalendar dateOfSale) {
-        if (!dateOfSale.after(new Date())) {
+        if (dateOfSale.before(new Date())) {
             this.dateOfSale = dateOfSale;   
         } else {
             throw new IllegalArgumentException("Cannot set date of sale in the future");
@@ -101,11 +101,28 @@ public class Bill {
     }
 
     public boolean legalState() {
-        if (billId > 0 && itemsOnBill.size() > 0 && customer != null && sellingCompany != null && dateOfSale != null && timeOfDelivery != null && dueDate != null) {
+        if (billId > 0 && itemsOnBill.size() > 0 && customer != null && sellingCompany != null && dateOfSale != null && dateOfDelivery != null && dueDate != null) {
             return true;
         } else {
             return false; 
         }
+    }
+
+    public double getTotalCostOfBill() {
+        double totalCost = 0;
+        for (Item item : itemsOnBill) {
+            totalCost += item.getPrice();
+        }
+        return totalCost;
+    }
+
+    public double getTotalTaxOnBill() {
+        double totalTax = 0;
+        for (Item item : itemsOnBill) {
+            totalTax += item.getPrice() * (item.getTaxOnItem() / 100);
+        }
+        return totalTax;
+
     }
 
 

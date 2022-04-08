@@ -1,7 +1,8 @@
 package billing_app.controllers;
 
 import java.io.File;
-import java.nio.file.Path;
+import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Paths;
 
 import billing_app.MainApp;
@@ -9,9 +10,12 @@ import billing_app.items.Address;
 import billing_app.items.OrganizationalId;
 import billing_app.logic.Company;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -20,16 +24,19 @@ public class CreateCompanyController {
     @FXML
     private TextField companyName, startingId, orgId, address, postalCode, city, country;
 
+
     @FXML 
     private Label validOrgId, logoPath;
 
     @FXML
-    private Button selectFileButton;
+    private Button selectFileButton, createCompany;
 
     OrganizationalId companyOrgId;
     Address companyAddress;
-    Path companyLogoPath;
+    String companyLogoPath;
     Company createdCompany = new Company();
+
+    Stage prevStage;
 
     @FXML
     private void handleOrganizationalIdChange() {
@@ -53,7 +60,7 @@ public class CreateCompanyController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select company logo");
         File selectedFile = fileChooser.showOpenDialog(stage);
-        companyLogoPath = Paths.get(selectedFile.getAbsolutePath());
+        companyLogoPath = Paths.get(selectedFile.getAbsolutePath()).toString();
         if (createdCompany.isValidLogo(companyLogoPath)) {
             logoPath.setText(companyLogoPath.toString().split("\\/(.*)")[0]);
         } else {
@@ -80,7 +87,31 @@ public class CreateCompanyController {
         createdCompany.setCurrentBillId(Integer.parseInt(startingId.getText()));
         createdCompany.setCompanyLogoPath(companyLogoPath);
         createdCompany.setOriganizationalId(companyOrgId);
-        MainApp.printToConsole(createdCompany.toString());
+        MainApp.addCompanyToApp(createdCompany);
+        goToOverview();
+    }
+
+    public void setPrevStage(Stage stage) {
+        this.prevStage = stage;
+    }
+
+    public void goToOverview() {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("Overview");
+            Pane myPane = null;
+
+            /* Add this as a relative path for the project */
+            myPane = FXMLLoader.load(new URL("file:///Users/casper/code/TDT4100-project/billing/src/main/resources/billing_app/Overview.fxml"));
+            Scene scene = new Scene(myPane);
+            stage.setScene(scene);
+            prevStage.close();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException w) {
+            w.printStackTrace();
+        }
     }
 }
 

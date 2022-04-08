@@ -1,18 +1,14 @@
 package billing_app.controllers;
 
-import java.net.URL;
+import java.io.FileNotFoundException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.ResourceBundle;
-
 import billing_app.MainApp;
 import billing_app.items.Bill;
 import billing_app.logic.Company;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -29,9 +25,12 @@ public class OverviewController {
     VBox main_vbox;
     Button knapp;
     Pane root_pane;
-    ImageView company_avatar;
 
-    Company currentCompany = MainApp.addCompanyToApplication();
+    @FXML
+    Pane company_avatar_pane;
+
+
+    Company currentCompany = MainApp.getCompany();
 
     List<Bill> billsOnDisplay = new ArrayList<Bill>();
 
@@ -76,8 +75,16 @@ public class OverviewController {
 
     @FXML
     public void initialize() {
-        Image companyLogo = new Image(currentCompany.getCompanyLogoPath().toString());
-        company_avatar.setImage(companyLogo);
+        displayBillsInVbox(currentCompany.companyUnfinishedBills);
+        try {
+            ImageView company_avatar = new ImageView(new Image(currentCompany.getCompanyLogoFileStream()));
+            company_avatar.setFitHeight(50);
+            company_avatar.setFitWidth(50);
+            company_avatar_pane.getChildren().add(company_avatar);
+            
+        } catch (FileNotFoundException e) {
+            MainApp.printToConsole(e.toString());
+        }
     }
 
 

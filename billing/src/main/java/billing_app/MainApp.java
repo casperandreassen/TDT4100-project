@@ -4,12 +4,18 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import billing_app.controllers.CreateCompanyController;
+import billing_app.controllers.CreateCompanyController;
 import billing_app.items.Bill;
 import billing_app.items.Item;
 import billing_app.items.OrganizationalId;
@@ -20,8 +26,7 @@ public class MainApp extends Application {
 
 
     @FXML
-
-    public static Collection<Company> companies = new ArrayList<Company>();
+    public static List<Company> companies = new ArrayList<Company>();
     public static double viewPortMaxHeight;
     public static double viewPortMaxWidth;
 
@@ -33,10 +38,20 @@ public class MainApp extends Application {
         System.out.println(s);
     }
 
-    public static Company addCompanyToApplication() {
+    public static void addCompanyToApp(Company company) {
+        if (company != null) {
+            companies.add(company);
+        }
+    }
+
+    public static Company getCompany() {
+        return companies.get(0);
+    }
+
+    /* public static Company addCompanyToApplication() {
         Company testCompany = new Company(); 
-        testCompany.setCompanyLogoPath(new )
         testCompany.setName("Statoil");
+        testCompany.setCompanyLogoPath("/Users/casper/code/TDT4100-project/billing/src/main/resources/img/default_company_avatar.jpg");
         OrganizationalId testOrgId = new OrganizationalId("991825827");
         testCompany.setOriganizationalId(testOrgId);
         Customer kunde = new Customer("1892374");
@@ -54,17 +69,21 @@ public class MainApp extends Application {
         testCompany.addUnfinishedBill(bill);
         testCompany.addUnfinishedBill(bill2);
         return testCompany;
-    }
+    } */
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        primaryStage.setTitle("Example App");
-        primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Overview.fxml"))));
-        primaryStage.setMaximized(true);
-        viewPortMaxHeight = primaryStage.getMaxHeight();
-        viewPortMaxWidth = primaryStage.getMaxWidth();
-        
+        primaryStage.setTitle("Billing app");
+        System.out.println(getClass().getResource("CreateCompany.fxml").getPath());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateCompany.fxml"));
+
+        Pane pane = (Pane)loader.load();
+
+        CreateCompanyController controller = (CreateCompanyController) loader.getController();
+        controller.setPrevStage(primaryStage);
+
+        Scene scene = new Scene(pane);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
-
 }

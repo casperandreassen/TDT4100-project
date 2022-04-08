@@ -1,5 +1,8 @@
 package billing_app.logic;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import billing_app.items.Item;
 
 public class Company extends Business{
 
-    private Path companyLogoPath; 
+    private String companyLogoPath; 
     private int currentBillId;
     public Collection<Item> allCompanyItems; 
     public Collection<Customer> allCompanyCustomers; 
@@ -63,12 +66,12 @@ public class Company extends Business{
         savestate.saveCurrentState();
     } */
 
-    public Path getCompanyLogoPath() {
-        return this.companyLogoPath;
+    public FileInputStream getCompanyLogoFileStream() throws FileNotFoundException {
+        return new FileInputStream(this.companyLogoPath);
     }
 
-    public void setCompanyLogoPath(Path newPath) {
-        this.companyLogoPath = newPath;
+    public void setCompanyLogoPath(String pathToFile) {
+        this.companyLogoPath = pathToFile;
     }
 
     public int getCurrentBillId() {
@@ -79,10 +82,10 @@ public class Company extends Business{
         this.currentBillId = startingBillId;
     }
 
-    public boolean isValidLogo(Path companyLogoPath) {
+    public boolean isValidLogo(String companyLogoPath) {
         try {
             List<String> acceptedFileTypes = new ArrayList<String>(Arrays.asList("jpg", "jpeg", "png"));
-            if (acceptedFileTypes.contains(companyLogoPath.toString().split("\\.(.*)")[0])) return true;
+            if (acceptedFileTypes.contains(companyLogoPath.split("\\.(.*)")[0])) return true;
             return false;
         } catch (Exception e) {
             MainApp.printToConsole(e.toString());
@@ -91,7 +94,7 @@ public class Company extends Business{
     }
 
     public static void main(String[] args) {
-        System.out.println("/Users/casper/Desktop/IMG_4204.PNG".split('\.(.*)')[0]);
+        
     }
 
 

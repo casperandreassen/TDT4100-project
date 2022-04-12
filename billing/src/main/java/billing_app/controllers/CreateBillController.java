@@ -18,7 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 
-public class CreateBillController extends GenericController {
+public class CreateBillController extends GenericController implements ControllerInterface {
 
     @FXML
     StackPane sellingCompanyInfoPane;
@@ -41,25 +41,25 @@ public class CreateBillController extends GenericController {
     @FXML
     Button addItemButton, addItemBill, saveBillButton, completeBillButton;
 
-    Bill newBill = new Bill(currentCompany);
+    Bill newBill;
 
     @FXML
     public void displayCustomersInChoiceBox() {
         ObservableList<Customer> customers = FXCollections.observableArrayList(currentCompany.allCompanyCustomers);
         ChoiceBox<Customer> customerSelect = new ChoiceBox<Customer>(customers);
 
-        /* customerSelect.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+        customerSelect.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue ov, Number value, Number newValue) {
                 newBill.addCustomerToBill((Customer) ov);
             }
-        }); */
+        });
         customerChoicePane.getChildren().add(customerSelect);
         MainApp.printToConsole(customers.toString());
     }
 
     @FXML
-    public void initialize() {
+    public void init() {
         displayCustomersInChoiceBox();
-        MainApp.printToConsole(currentCompany.getName());
+        newBill = new Bill(currentCompany);
     }
 }

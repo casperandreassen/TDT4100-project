@@ -1,20 +1,15 @@
 package billing_app.controllers;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import billing_app.MainApp;
 import billing_app.items.Bill;
-import billing_app.logic.Company;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -24,7 +19,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class OverviewController extends GenericController {
+public class OverviewController extends GenericController implements ControllerInterface {
 
     @FXML
     VBox main_vbox;
@@ -88,8 +83,8 @@ public class OverviewController extends GenericController {
     }
 
     @FXML
-    public void initialize() {
-        /* displayBillsInVbox(currentCompany.companyUnfinishedBills);
+    public void init() {
+        displayBillsInVbox(currentCompany.companyUnfinishedBills);
         try {
             ImageView company_avatar = new ImageView(new Image(currentCompany.getCompanyLogoFileStream()));
             company_avatar.setFitHeight(50);
@@ -98,17 +93,17 @@ public class OverviewController extends GenericController {
             
         } catch (FileNotFoundException e) {
             MainApp.printToConsole(e.toString());
-        } */
+        }
         /* Should also catch IOException here */
 
-        /* Label companyName = new Label(currentCompany.getName());
+        Label companyName = new Label(currentCompany.getName());
         Label companyAddress = new Label(currentCompany.getAddress().toString());
         StackPane.setAlignment(companyName, Pos.TOP_LEFT);
         StackPane.setAlignment(companyAddress, Pos.BOTTOM_LEFT);
-        companyInfoPane.getChildren().addAll(companyName, companyAddress); */
+        companyInfoPane.getChildren().addAll(companyName, companyAddress);
 
-        /* company_name.setText(currentCompany.getName()); */
-        /* companyAddress.setText(currentCompany.getAddress().toString()); */
+        companyName.setText(currentCompany.getName());
+        companyAddress.setText(currentCompany.getAddress().toString());
     }
 
 

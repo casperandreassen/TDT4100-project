@@ -19,7 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class CreateCompanyController {
+public class CreateCompanyController extends GenericController implements ControllerInterface {
     
     @FXML
     private TextField companyName, startingId, orgId, address, postalCode, city, country;
@@ -95,8 +95,7 @@ public class CreateCompanyController {
         createdCompany.setCurrentBillId(Integer.parseInt(startingId.getText()));
         createdCompany.setCompanyLogoPath(companyLogoPath);
         createdCompany.setOriganizationalId(companyOrgId);
-        MainApp.addCompanyToApp(createdCompany);
-        goToOverview();
+        goToView("Overview", "Overview.fxml", (Stage) selectFileButton.getScene().getWindow());
     }
 
     public void setPrevStage(Stage stage) {
@@ -121,5 +120,11 @@ public class CreateCompanyController {
             w.printStackTrace();
         }
     }
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 }
 

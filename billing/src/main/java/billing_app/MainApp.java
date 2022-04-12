@@ -14,9 +14,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import billing_app.controllers.ControllerInterface;
 import billing_app.controllers.CreateCompanyController;
+import billing_app.controllers.GenericController;
 import billing_app.controllers.OverviewController;
 import billing_app.controllers.CreateCompanyController;
+import billing_app.items.Address;
 import billing_app.items.Bill;
 import billing_app.items.Item;
 import billing_app.items.OrganizationalId;
@@ -40,11 +43,6 @@ public class MainApp extends Application {
         System.out.println(s);
     }
 
-    /* public static void addCompanyToApp(Company company) {
-        if (company != null) {
-            companies.add(company);
-        }
-    } */
 
     /* This needs to be made properly */
     public static Company getCompany() {
@@ -55,9 +53,17 @@ public class MainApp extends Application {
         companies.setName("Statoil");
         companies.setCompanyLogoPath("/Users/casper/code/TDT4100-project/billing/src/main/resources/img/default_company_avatar.jpg");
         OrganizationalId testOrgId = new OrganizationalId("991825827");
+        Address adress = new Address();
+        adress.setAddress("Mohot 11");
+        adress.setPostalCode("7050");
+        adress.setCity("Trondheim");
+        adress.setCountry("Norway");
+        companies.setAddress(adress);
         companies.setOriganizationalId(testOrgId);
         Customer kunde = new Customer("1892374");
         kunde.setName("Apple");
+        kunde.setAddress(adress);
+        companies.addCustomerToCompany(kunde);
         Item testItem = new Item("Kjøttboller", 29.90, 12.0, "Canned foods");
         Item testItem2 = new Item("iPhone 13 Pro Max", 13900.0, 25.0, "Mobile Phones");
         Bill bill = new Bill(companies);
@@ -76,14 +82,12 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) throws IOException {
         addCompanyToApplication();
         primaryStage.setTitle("Billing app");
-        System.out.println(getClass().getResource("CreateCompany.fxml").getPath());
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Overview.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateCompany.fxml"));
         
         Pane pane = (Pane)loader.load();
+        ((GenericController) loader.getController()).setCompany(companies);
+        ((ControllerInterface) loader.getController()).init();
 
-        OverviewController controller = (OverviewController) loader.getController();
-        controller.setPrevStage(primaryStage);
-        controller.setCompany(companies);
         Scene scene = new Scene(pane);
         primaryStage.setScene(scene);
         primaryStage.show();

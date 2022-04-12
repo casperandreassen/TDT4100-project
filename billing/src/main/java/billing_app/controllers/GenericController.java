@@ -3,6 +3,7 @@ package billing_app.controllers;
 import java.io.IOException;
 import java.net.URL;
 
+
 import billing_app.MainApp;
 import billing_app.logic.Company;
 import javafx.fxml.FXMLLoader;
@@ -24,22 +25,23 @@ public abstract class GenericController {
         this.prevStage = stage; 
     }
 
+
     public void goToView(String title, String view, Stage prevStage ) {
         try {
-
-            MainApp.printToConsole(new URL(String.format("file://%1$s/billing/src/main/resources/billing_app/%2$s", System.getProperty("user.dir"), view)).toString());
-            FXMLLoader loader = new FXMLLoader(new URL(String.format("file://%1$s/billing/src/main/resources/billing_app/%2$s", System.getProperty("user.dir"), view)));
-            Parent root = loader.load();
-
-            ((GenericController) loader.getController()).setCompany(currentCompany);
-
+            URL fileUrl = new URL(String.format("file://%1$s/billing/target/classes/billing_app/%2$s", System.getProperty("user.dir"), view));
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(fileUrl);
             Stage stage = new Stage();
+            Pane root = (Pane) loader.load();
+            ((GenericController) loader.getController()).setCompany(currentCompany);
+            ((ControllerInterface) loader.getController()).init();
             stage.setScene(new Scene(root));
+            prevStage.close();
             stage.setTitle(title);
             stage.show();
 
         } catch (IOException e) {
-            MainApp.printToConsole(e.toString());
+            e.printStackTrace();
         }
     }
 }

@@ -76,6 +76,11 @@ public class Address {
         this.country = country;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%1$s, %2$s, \n %3$s, %4$s.", this.address, this.postalCode, this.city, this.country);
+    }
+
     public static void main(String[] args) {
         Address customerAddress = new Address();
         long start = System.currentTimeMillis();

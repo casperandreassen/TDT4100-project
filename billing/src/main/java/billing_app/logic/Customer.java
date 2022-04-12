@@ -7,4 +7,9 @@ public class Customer extends Business{
     public Customer(String customerId) {
         this.customerId = customerId;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s", this.name);
+    }
 }

@@ -1,6 +1,8 @@
 package billing_app.controllers;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,8 +11,10 @@ import billing_app.MainApp;
 import billing_app.items.Bill;
 import billing_app.logic.Company;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -18,27 +22,37 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class OverviewController {
+public class OverviewController extends GenericController {
 
     @FXML
     VBox main_vbox;
+
+    @FXML
     Button knapp;
+
+    @FXML
     Pane root_pane;
+
+    @FXML
+    StackPane companyInfoPane;
 
     @FXML
     Pane company_avatar_pane;
 
-
-    Company currentCompany = MainApp.getCompany();
-
     List<Bill> billsOnDisplay = new ArrayList<Bill>();
+
 
 
     /* Get this properly working sometime */
     public void adjustMainPaneSize() {
         root_pane.prefHeight(MainApp.viewPortMaxHeight);
         root_pane.prefWidth(MainApp.viewPortMaxWidth);
+    }
+
+    public void goToCreateBill() {
+        goToView("Create new bill", "CreateBill.fxml", (Stage) root_pane.getScene().getWindow());
     }
 
 
@@ -75,16 +89,26 @@ public class OverviewController {
 
     @FXML
     public void initialize() {
-        displayBillsInVbox(currentCompany.companyUnfinishedBills);
+        /* displayBillsInVbox(currentCompany.companyUnfinishedBills);
         try {
             ImageView company_avatar = new ImageView(new Image(currentCompany.getCompanyLogoFileStream()));
             company_avatar.setFitHeight(50);
-            company_avatar.setFitWidth(50);
+            company_avatar.setFitWidth(60);
             company_avatar_pane.getChildren().add(company_avatar);
             
         } catch (FileNotFoundException e) {
             MainApp.printToConsole(e.toString());
-        }
+        } */
+        /* Should also catch IOException here */
+
+        /* Label companyName = new Label(currentCompany.getName());
+        Label companyAddress = new Label(currentCompany.getAddress().toString());
+        StackPane.setAlignment(companyName, Pos.TOP_LEFT);
+        StackPane.setAlignment(companyAddress, Pos.BOTTOM_LEFT);
+        companyInfoPane.getChildren().addAll(companyName, companyAddress); */
+
+        /* company_name.setText(currentCompany.getName()); */
+        /* companyAddress.setText(currentCompany.getAddress().toString()); */
     }
 
 

@@ -70,10 +70,13 @@ public class CreateCompanyController {
 
     @FXML
     private void handlePostalCodeInput() {
+        companyAddress = new Address();
         if (postalCode.getText().length() == 4) {
-            companyAddress = new Address();
-            city.setText(companyAddress.postalCodes.get(postalCode.getText()));
-            country.setText("NORWAY");
+            String cityName = companyAddress.postalCodes.get(postalCode.getText());
+            if (city != null) {
+                city.setText(cityName);
+                country.setText("NORWAY");
+            } 
         } else {
             city.setText("");
             country.setText("");
@@ -82,6 +85,11 @@ public class CreateCompanyController {
 
     @FXML
     private void createCompany() {
+        companyAddress.setAddress(address.getText());
+        companyAddress.setCity(city.getText());
+        companyAddress.setPostalCode(postalCode.getText());
+        companyAddress.setCountry(country.getText());
+
         createdCompany.setAddress(companyAddress);
         createdCompany.setName(companyName.getText());
         createdCompany.setCurrentBillId(Integer.parseInt(startingId.getText()));

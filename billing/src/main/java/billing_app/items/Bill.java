@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import billing_app.logic.Company;
 import billing_app.logic.Customer;
@@ -17,7 +19,7 @@ public class Bill {
 
     private int billId; 
     private GregorianCalendar dateOfSale;  
-    private Collection<Item> itemsOnBill;
+    private HashMap<Item, Integer> itemsOnBill;
     private Company sellingCompany;
     private Customer customer;
     private GregorianCalendar dateOfDelivery; 
@@ -27,17 +29,22 @@ public class Bill {
     public Bill(Company sellingCompany) {
         if (sellingCompany.getOrganizationalId() != null && this.billId == 0) {
             this.sellingCompany = sellingCompany;
-            this.itemsOnBill = new ArrayList<Item>();
+            this.itemsOnBill = new HashMap<Item, Integer>();
         }
     }
 
     public void addItemToBill(Item item) {
-        this.itemsOnBill.add(item);
+        if (!(this.itemsOnBill.putIfAbsent(item, 1) == null)) {
+            this.itemsOnBill.put(item, this.itemsOnBill.get(item) + 1);
+        }
     }
 
-    /* Returns True if the item was removed from the bill. */
-    public boolean removeItemFromBill(Item item) {
-        return this.itemsOnBill.remove(item);
+    public void removeItemFromBill(Item item) {
+        if (this.itemsOnBill.get(item) == 1) {
+            this.itemsOnBill.remove(item);
+        } else if (this.itemsOnBill.get(item) != null) {
+            this.itemsOnBill.put(item, this.itemsOnBill.get(item) - 1);
+        }
     }
 
     public boolean addCustomerToBill(Customer customer) {
@@ -92,7 +99,7 @@ public class Bill {
         this.billId = billId;
     }
 
-    public Collection<Item> getItems() {
+    public HashMap<Item, Integer> getItems() {
         return this.itemsOnBill;
     }
 
@@ -110,16 +117,16 @@ public class Bill {
 
     public double getTotalCostOfBill() {
         double totalCost = 0;
-        for (Item item : itemsOnBill) {
-            totalCost += item.getPrice();
+        for (Item item : itemsOnBill.keySet()) {
+            totalCost += item.getPrice() * itemsOnBill.get(item);
         }
         return totalCost;
     }
 
     public double getTotalTaxOnBill() {
         double totalTax = 0;
-        for (Item item : itemsOnBill) {
-            totalTax += item.getPrice() * (item.getTaxOnItem() / 100);
+        for (Item item : itemsOnBill.keySet()) {
+            totalTax += (item.getPrice() * itemsOnBill.get(item)) * (item.getTaxOnItem() / 100);
         }
         return totalTax;
 

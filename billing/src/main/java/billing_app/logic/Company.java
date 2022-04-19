@@ -75,6 +75,10 @@ public class Company extends Business{
         this.currentBillId = startingBillId;
     }
 
+    public Collection<Item> getCompanyItems() {
+        return this.allCompanyItems;
+    }
+
 
     public static void main(String[] args) {
         

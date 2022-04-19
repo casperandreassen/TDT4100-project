@@ -10,9 +10,5 @@ public class Customer extends Business{
         this.customerId = customerId;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s", this.customerId);
-    }
 
 }

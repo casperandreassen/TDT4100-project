@@ -12,6 +12,7 @@ import billing_app.logic.Customer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -21,6 +22,9 @@ public abstract class GenericController {
 
     @FXML
     TextField name, address, city, postalCode, country, orgId, startingBillId;
+
+    @FXML
+    CheckBox saveCustomer;
 
     @FXML
     Label legalOrgId;
@@ -60,12 +64,18 @@ public abstract class GenericController {
     public void createBusiness(Business tmp) {
         try {
             tmp.setName(name.getText());
+            /* Maybe display some error message here aswell. */
             Address tmpAdress = new Address();
             tmpAdress.setAddress(address.getText());
             tmpAdress.setCity(city.getText());
             tmpAdress.setPostalCode(postalCode.getText());
             tmpAdress.setCountry(country.getText());
             tmp.setAddress(tmpAdress);
+            try {
+                tmp.setOriganizationalId(new OrganizationalId(orgId.getText()));
+            } catch (IllegalArgumentException e) {
+                /* Display some error message here. */
+            }
             if (tmp instanceof Company) {
                 Company tmp1 = (Company) tmp;
                 tmp1.setCurrentBillId(Integer.valueOf(startingBillId.getText()));
@@ -89,5 +99,20 @@ public abstract class GenericController {
         } catch (IllegalArgumentException e) {
             legalOrgId.setText("Invalid");
         }   
+    }
+
+    @FXML
+    private void handlePostalCodeInput() {
+        Address companyAddress = new Address();
+        if (postalCode.getText().length() == 4) {
+            String cityName = companyAddress.postalCodes.get(postalCode.getText());
+            if (city != null) {
+                city.setText(cityName);
+                country.setText("NORWAY");
+            } 
+        } else {
+            city.setText("");
+            country.setText("");
+        }
     }
 }

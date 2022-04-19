@@ -69,8 +69,10 @@ public class MainApp extends Application {
         kunde.setAddress(adress);
         companies.addCustomerToCompany(kunde);
         companies.addCustomerToCompany(kunde2);
-        Item testItem = new Item("Kjøttboller", 29.90, 12.0, "Canned foods");
-        Item testItem2 = new Item("iPhone 13 Pro Max", 13900.0, 25.0, "Mobile Phones");
+        Item testItem = new Item("Kjøttboller", 29.90, 12.0);
+        Item testItem2 = new Item("iPhone 13 Pro Max", 13900.0, 25.0);
+        companies.addItemToCompany(testItem);
+        companies.addItemToCompany(testItem2);
         Bill bill = new Bill(companies);
         bill.addItemToBill(testItem);
         bill.addItemToBill(testItem2);
@@ -87,7 +89,7 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) throws IOException {
         addCompanyToApplication();
         primaryStage.setTitle("Billing app");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateCompany.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Overview.fxml"));
         
         Pane pane = (Pane)loader.load();
         ((GenericController) loader.getController()).setCompany(companies);

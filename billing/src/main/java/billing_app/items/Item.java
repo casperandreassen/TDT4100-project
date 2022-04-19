@@ -7,12 +7,13 @@ public class Item {
     private String category;
 
 
-    public Item(String name, double price, double taxOnItem, String category) {
-        if (name != null && price > 0 && taxOnItem > 0 && category != null) {
+    public Item(String name, double price, double taxOnItem) {
+        if (name != null && price > 0 && taxOnItem > 0) {
             this.name = name; 
             this.price = price; 
             this.taxOnItem = taxOnItem; 
-            this.category = category;
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 
@@ -32,5 +33,10 @@ public class Item {
 
     public String getCategory() {
         return category;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

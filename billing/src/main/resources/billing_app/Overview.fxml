@@ -8,7 +8,7 @@
 <Pane fx:id="root_pane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="0.0" prefHeight="850.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.controllers.OverviewController">
    <children>
       <VBox fx:id="main_vbox" layoutX="18.0" layoutY="62.0" prefHeight="738.0" prefWidth="802.0" style="-fx-border-color: black; -fx-background-color: white;" />
-      <Button fx:id="knapp" layoutX="334.0" layoutY="813.0" mnemonicParsing="false" onAction="#nextBillsInVbox" text="Next " />
+      <Button fx:id="knapp" layoutX="334.0" layoutY="813.0" mnemonicParsing="false" text="Next " />
       <Button layoutX="258.0" layoutY="812.0" mnemonicParsing="false" text="Previous" />
       <Pane fx:id="company_avatar_pane" layoutX="1359.0" layoutY="11.0" prefHeight="70.0" prefWidth="70.0" />
       <Button layoutX="1311.0" layoutY="800.0" mnemonicParsing="false" onAction="#goToCreateBill" prefHeight="26.0" prefWidth="95.0" text="New bill" />

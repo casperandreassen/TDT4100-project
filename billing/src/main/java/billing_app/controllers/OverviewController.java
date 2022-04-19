@@ -78,13 +78,10 @@ public class OverviewController extends GenericController implements ControllerI
         }
     }
 
-    public void nextBillsInVbox() {
-        displayBillsInVbox(currentCompany.companyUnfinishedBills);
-    }
 
     @FXML
     public void init() {
-        displayBillsInVbox(currentCompany.companyUnfinishedBills);
+        displayBillsInVbox(currentCompany.companySentBills);
         try {
             ImageView company_avatar = new ImageView(new Image(currentCompany.getCompanyLogoFileStream()));
             company_avatar.setFitHeight(50);

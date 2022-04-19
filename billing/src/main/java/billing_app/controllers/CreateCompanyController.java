@@ -50,20 +50,6 @@ public class CreateCompanyController extends GenericController implements Contro
         }
     }
 
-    @FXML
-    private void handlePostalCodeInput() {
-        Address companyAddress = new Address();
-        if (postalCode.getText().length() == 4) {
-            String cityName = companyAddress.postalCodes.get(postalCode.getText());
-            if (city != null) {
-                city.setText(cityName);
-                country.setText("NORWAY");
-            } 
-        } else {
-            city.setText("");
-            country.setText("");
-        }
-    }
 
     @FXML
     private void createCompany() {

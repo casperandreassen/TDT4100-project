@@ -1,16 +1,15 @@
 package billing_app.items;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Map;
 
 import billing_app.logic.Company;
 import billing_app.logic.Customer;
 
-import billing_app.items.Item;
 
 public class Bill {
 
@@ -40,10 +39,14 @@ public class Bill {
     }
 
     public void removeItemFromBill(Item item) {
-        if (this.itemsOnBill.get(item) == 1) {
-            this.itemsOnBill.remove(item);
-        } else if (this.itemsOnBill.get(item) != null) {
-            this.itemsOnBill.put(item, this.itemsOnBill.get(item) - 1);
+        try {
+            if (this.itemsOnBill.get(item) == 1) {
+                this.itemsOnBill.remove(item);
+            } else if (this.itemsOnBill.get(item) != null) {
+                this.itemsOnBill.put(item, this.itemsOnBill.get(item) - 1);
+            }
+        } catch (Exception e) {
+            //TODO: handle exception
         }
     }
 
@@ -63,8 +66,8 @@ public class Bill {
         return false; 
     }
 
-    public void addDateOfSale(GregorianCalendar dateOfSale) {
-        if (dateOfSale.before(new Date())) {
+    public void addDateOfSale(GregorianCalendar dateOfSale) throws ParseException {
+        if (dateOfSale != null) {
             this.dateOfSale = dateOfSale;   
         } else {
             throw new IllegalArgumentException("Cannot set date of sale in the future");
@@ -84,7 +87,7 @@ public class Bill {
     }
 
     public void addDueDate(GregorianCalendar dueDate) {
-        if (!dueDate.before(new Date())) {
+        if (dueDate != null) {
             this.dueDate = dueDate;
         } else {
             throw new IllegalArgumentException("Due date cannot be in the past.");
@@ -116,7 +119,7 @@ public class Bill {
     }
 
     public boolean legalState() {
-        if (billId > 0 && itemsOnBill.size() > 0 && customer != null && sellingCompany != null && dateOfSale != null && dateOfDelivery != null && dueDate != null) {
+        if (itemsOnBill.size() > 0 && customer != null && sellingCompany != null && dateOfSale != null && dateOfDelivery != null && dueDate != null) {
             return true;
         } else {
             return false; 
@@ -137,7 +140,6 @@ public class Bill {
             totalTax += (item.getPrice() * itemsOnBill.get(item)) * (item.getTaxOnItem() / 100);
         }
         return totalTax;
-
     }
 
 

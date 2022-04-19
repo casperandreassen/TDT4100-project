@@ -1,10 +1,7 @@
 package billing_app.logic;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -61,10 +58,6 @@ public class Company extends Business{
         }
     }
 
-    /* public void saveCompanyState() {
-        SaveState savestate = new SaveState(this);
-        savestate.saveCurrentState();
-    } */
 
     public FileInputStream getCompanyLogoFileStream() throws FileNotFoundException {
         return new FileInputStream(this.companyLogoPath);
@@ -82,16 +75,6 @@ public class Company extends Business{
         this.currentBillId = startingBillId;
     }
 
-    public boolean isValidLogo(String companyLogoPath) {
-        try {
-            List<String> acceptedFileTypes = new ArrayList<String>(Arrays.asList("jpg", "jpeg", "png"));
-            if (acceptedFileTypes.contains(companyLogoPath.split("\\.(.*)")[0])) return true;
-            return false;
-        } catch (Exception e) {
-            MainApp.printToConsole(e.toString());
-            return false;
-        }
-    }
 
     public static void main(String[] args) {
         

@@ -13,9 +13,9 @@
             <Font name="Geeza Pro Regular" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="companyName" layoutX="27.0" layoutY="105.0" />
+      <TextField fx:id="name" layoutX="27.0" layoutY="105.0" />
       <TextField fx:id="orgId" layoutX="25.0" layoutY="149.0" onKeyTyped="#handleOrganizationalIdChange" />
-      <TextField fx:id="startingId" layoutX="24.0" layoutY="193.0" />
+      <TextField fx:id="startingBillId" layoutX="24.0" layoutY="193.0" />
       <TextField fx:id="address" layoutX="25.0" layoutY="236.0" />
       <TextField fx:id="postalCode" layoutX="26.0" layoutY="275.0" onKeyTyped="#handlePostalCodeInput" />
       <Label layoutX="28.0" layoutY="93.0" text="Company name">
@@ -66,7 +66,7 @@
          </font>
       </Button>
       <Button fx:id="createCompany" layoutX="48.0" layoutY="431.0" mnemonicParsing="false" onAction="#createCompany" text="Create Company" />
-      <Label fx:id="validOrgId" layoutX="154.0" layoutY="138.0" prefHeight="8.0" prefWidth="33.0" text="Invalid" textFill="RED">
+      <Label fx:id="legalOrgId" layoutX="154.0" layoutY="138.0" prefHeight="8.0" prefWidth="33.0" text="Invalid" textFill="RED">
          <font>
             <Font size="9.0" />
          </font>

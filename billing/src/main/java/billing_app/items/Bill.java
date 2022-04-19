@@ -107,6 +107,14 @@ public class Bill {
         return this.customer;
     }
 
+    public void removeCustomer() throws IllegalArgumentException {
+        if (this.customer != null) {
+            this.customer = null;
+        } else {
+            throw new IllegalArgumentException("You need to add a customer before you can add it to the bill.");
+        }
+    }
+
     public boolean legalState() {
         if (billId > 0 && itemsOnBill.size() > 0 && customer != null && sellingCompany != null && dateOfSale != null && dateOfDelivery != null && dueDate != null) {
             return true;

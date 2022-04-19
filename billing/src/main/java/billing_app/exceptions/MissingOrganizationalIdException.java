@@ -1,5 +1,5 @@
 package billing_app.exceptions;
 
-public class MissingOrganizationalIdException extends IllegalStateException {
+public class IllegalOrganizationalIdException extends IllegalStateException {
     
 }

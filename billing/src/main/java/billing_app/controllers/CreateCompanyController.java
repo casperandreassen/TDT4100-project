@@ -22,8 +22,7 @@ import javafx.stage.Stage;
 public class CreateCompanyController extends GenericController implements ControllerInterface {
     
     @FXML
-    private TextField companyName, startingId, orgId, address, postalCode, city, country;
-
+    private TextField startingId;
 
     @FXML 
     private Label validOrgId, logoPath;
@@ -31,46 +30,29 @@ public class CreateCompanyController extends GenericController implements Contro
     @FXML
     private Button selectFileButton, createCompany;
 
-    OrganizationalId companyOrgId;
-    Address companyAddress;
-    String companyLogoPath;
-    Company createdCompany = new Company();
+    String tmpLogoPath;
 
     Stage prevStage;
 
-    @FXML
-    private void handleOrganizationalIdChange() {
-        String tmpOrgId = orgId.getText();
-        try {
-            companyOrgId = new OrganizationalId(tmpOrgId);
-            updateValidOrgId("Valid");
-        } catch (IllegalArgumentException e) {
-            updateValidOrgId("Invalid");
-        }   
-    }
-
-    @FXML
-    private void updateValidOrgId(String validity) {
-        validOrgId.setText(validity);
-    }
 
     @FXML
     private void handleLogoSelect() {
-        Stage stage = new Stage();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select company logo");
-        File selectedFile = fileChooser.showOpenDialog(stage);
-        companyLogoPath = Paths.get(selectedFile.getAbsolutePath()).toString();
-        if (createdCompany.isValidLogo(companyLogoPath)) {
-            logoPath.setText(companyLogoPath.toString().split("\\/(.*)")[0]);
-        } else {
-            logoPath.setText("Invalid file");
+        try {
+            Stage stage = new Stage();
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select company logo");
+            File selectedFile = fileChooser.showOpenDialog(stage);
+            tmpLogoPath = Paths.get(selectedFile.getAbsolutePath()).toString();
+            logoPath.setText(Paths.get(selectedFile.getAbsolutePath()).toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            /* Add some logic for displaying popup error messages. */
         }
     }
 
     @FXML
     private void handlePostalCodeInput() {
-        companyAddress = new Address();
+        Address companyAddress = new Address();
         if (postalCode.getText().length() == 4) {
             String cityName = companyAddress.postalCodes.get(postalCode.getText());
             if (city != null) {
@@ -85,16 +67,8 @@ public class CreateCompanyController extends GenericController implements Contro
 
     @FXML
     private void createCompany() {
-        companyAddress.setAddress(address.getText());
-        companyAddress.setCity(city.getText());
-        companyAddress.setPostalCode(postalCode.getText());
-        companyAddress.setCountry(country.getText());
-
-        createdCompany.setAddress(companyAddress);
-        createdCompany.setName(companyName.getText());
-        createdCompany.setCurrentBillId(Integer.parseInt(startingId.getText()));
-        createdCompany.setCompanyLogoPath(companyLogoPath);
-        createdCompany.setOriganizationalId(companyOrgId);
+        createBusiness(new Company());
+        currentCompany.setCompanyLogoPath(tmpLogoPath);
         goToView("Overview", "Overview.fxml", (Stage) selectFileButton.getScene().getWindow());
     }
 
@@ -102,24 +76,6 @@ public class CreateCompanyController extends GenericController implements Contro
         this.prevStage = stage;
     }
 
-    public void goToOverview() {
-        try {
-            Stage stage = new Stage();
-            stage.setTitle("Overview");
-            Pane myPane = null;
-
-            /* Add this as a relative path for the project */
-            myPane = FXMLLoader.load(new URL("file:///Users/casper/code/TDT4100-project/billing/src/main/resources/billing_app/Overview.fxml"));
-            Scene scene = new Scene(myPane);
-            stage.setScene(scene);
-            prevStage.close();
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NullPointerException w) {
-            w.printStackTrace();
-        }
-    }
 
 	@Override
 	public void init() {

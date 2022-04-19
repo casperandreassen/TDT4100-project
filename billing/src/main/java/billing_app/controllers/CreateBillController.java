@@ -1,5 +1,7 @@
 package billing_app.controllers;
 
+import java.util.UUID;
+
 import billing_app.MainApp;
 import billing_app.items.Bill;
 import billing_app.items.Item;
@@ -13,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -39,9 +42,14 @@ public class CreateBillController extends GenericController implements Controlle
     TilePane customerChoicePane;
 
     @FXML
-    Button addItemButton, addItemBill, saveBillButton, completeBillButton;
+    Button addItemButton, addItemBill, saveBillButton, completeBillButton, addExistingCustomerButton, addNewCustomerButton;
+
+    @FXML
+    Label currentCompanyInfo;
 
     Bill newBill;
+
+    Customer tmpCustomer;
 
     @FXML
     public void displayCustomersInChoiceBox() {
@@ -50,7 +58,7 @@ public class CreateBillController extends GenericController implements Controlle
 
         customerSelect.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue ov, Number value, Number newValue) {
-                newBill.addCustomerToBill((Customer) ov);
+                tmpCustomer = customers.get((int) newValue);
             }
         });
         customerChoicePane.getChildren().add(customerSelect);
@@ -58,8 +66,34 @@ public class CreateBillController extends GenericController implements Controlle
     }
 
     @FXML
+    public void addNewCustomer() {
+        createBusiness(new Customer(UUID.randomUUID()));
+        
+    }
+
+
+    @FXML
+    public void addCustomer() {
+        if (tmpCustomer != null) {
+            newBill.addCustomerToBill(this.tmpCustomer);
+        } else {
+            throw new IllegalArgumentException("You need to add a customer before you can add it to the bill.");
+        }
+    }
+
+    @FXML
+    public void removeCustomer() {
+        try {
+            newBill.removeCustomer();
+        } catch (IllegalArgumentException e) {
+            /* Maybe add a popup system for these kinds of messages. */
+        }
+    }
+
+    @FXML
     public void init() {
         displayCustomersInChoiceBox();
         newBill = new Bill(currentCompany);
+        currentCompanyInfo.setText(currentCompany.toString());
     }
 }

@@ -37,6 +37,11 @@ public abstract class Business {
         return this.name;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%1$s, %2$s.", this.name, this.address);
+    }
+
 
 
 

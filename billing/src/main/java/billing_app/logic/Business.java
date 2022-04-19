@@ -1,13 +1,14 @@
 package billing_app.logic;
 
 import billing_app.items.Address;
+import billing_app.items.Bill;
 import billing_app.items.OrganizationalId;
 
 public abstract class Business {
     
     String name;
     OrganizationalId orgId; 
-    Address address; 
+    Address address;
 
 
     public void setOriganizationalId(OrganizationalId orgId) {
@@ -36,6 +37,7 @@ public abstract class Business {
     public String getName() {
         return this.name;
     }
+
 
     @Override
     public String toString() {

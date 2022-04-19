@@ -73,16 +73,6 @@ public class MainApp extends Application {
         Item testItem2 = new Item("iPhone 13 Pro Max", 13900.0, 25.0);
         companies.addItemToCompany(testItem);
         companies.addItemToCompany(testItem2);
-        Bill bill = new Bill(companies);
-        bill.addItemToBill(testItem);
-        bill.addItemToBill(testItem2);
-        bill.addCustomerToBill(kunde);
-        Bill bill2 = new Bill(companies);
-        bill2.addItemToBill(testItem);
-        bill2.addItemToBill(testItem2);
-        bill2.addCustomerToBill(kunde);
-        companies.addUnfinishedBill(bill);
-        companies.addUnfinishedBill(bill2);
     }
 
     @Override

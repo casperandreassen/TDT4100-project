@@ -5,8 +5,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import billing_app.MainApp;
 import billing_app.items.Bill;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -53,29 +56,51 @@ public class OverviewController extends GenericController implements ControllerI
 
     /* Add all info to bills and make it clickable */
     public void displayBillsInVbox(Collection<Bill> bills) {
+        main_vbox.getChildren().clear();
         for (Bill bill : bills) {
-            if (!billsOnDisplay.contains(bill)) {
-                StackPane pane = new StackPane();
-                pane.setPrefSize(814, 100);
-                pane.setPadding(new Insets(5, 5, 5, 5));
+            StackPane pane = new StackPane();
+            pane.setPrefSize(814, 100);
+            pane.setPadding(new Insets(5, 5, 5, 5));
 
-                Label customer = new Label("Customer: " + bill.getBillCustomer().getName());
-                Label totalMva = new Label("Tax: " + Double.toString(bill.getTotalTaxOnBill()));
-                Label totalCost = new Label("Total: " + Double.toString(bill.getTotalCostOfBill()));
-                Label dueDate = new Label("Due date: " + bill.getDueDate().toZonedDateTime().format(DateTimeFormatter.ofPattern("d MMM uuuu")));
-
-                StackPane.setAlignment(customer, Pos.TOP_LEFT);
-                StackPane.setAlignment(totalMva, Pos.CENTER_RIGHT);
-                StackPane.setAlignment(totalCost, Pos.BOTTOM_RIGHT);
-                StackPane.setAlignment(dueDate, Pos.BOTTOM_LEFT);
-
-                pane.getChildren().addAll(customer, totalMva, totalCost, dueDate);
-                main_vbox.getChildren().add(pane);
-
-                /* To keep track of witch bills are already displayed so that it wont get displayed twice */
-                billsOnDisplay.add(bill);
+            Label customer = new Label("Customer: " + bill.getBillCustomer().getName());
+            Label totalMva = new Label("Tax: " + Double.toString(bill.getTotalTaxOnBill()));
+            Label totalCost = new Label("Total: " + Double.toString(bill.getTotalCostOfBill()));
+            String date = "N/A";
+            try {
+                date = bill.getDueDate().
+            toZonedDateTime().format(DateTimeFormatter.ofPattern("d MMM uuuu"));
+            } catch (NullPointerException e) {
             }
-        }
+
+            Label dueDate = new Label("Due date: " + date);
+            Button editButton = new Button("Edit");
+            editButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    goToView("Edit", "CreateBill.fxml", (Stage) main_vbox.getScene().getWindow(), bill);
+                }
+                
+            });
+
+            StackPane.setAlignment(customer, Pos.TOP_LEFT);
+            StackPane.setAlignment(totalMva, Pos.CENTER_RIGHT);
+            StackPane.setAlignment(totalCost, Pos.BOTTOM_RIGHT);
+            StackPane.setAlignment(dueDate, Pos.BOTTOM_LEFT);
+            StackPane.setAlignment(editButton, Pos.CENTER);
+
+            pane.getChildren().addAll(customer, totalMva, totalCost, dueDate, editButton);
+            main_vbox.getChildren().add(pane);
+            }
+    }
+
+    @FXML
+    public void showUncompletedBills() {
+        displayBillsInVbox(currentCompany.companyUnfinishedBills);
+    }
+
+    @FXML
+    public void showCompletedBills() {
+        displayBillsInVbox(currentCompany.companySentBills);
     }
 
 

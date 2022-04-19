@@ -13,5 +13,7 @@
       <Pane fx:id="company_avatar_pane" layoutX="1359.0" layoutY="11.0" prefHeight="70.0" prefWidth="70.0" />
       <Button layoutX="1311.0" layoutY="800.0" mnemonicParsing="false" onAction="#goToCreateBill" prefHeight="26.0" prefWidth="95.0" text="New bill" />
       <StackPane fx:id="companyInfoPane" layoutX="1155.0" layoutY="18.0" prefHeight="49.0" prefWidth="217.0" />
+      <Button layoutX="295.0" layoutY="34.0" mnemonicParsing="false" onAction="#showCompletedBills" style="-fx-background-color: lightblue;" text="Completed bills" />
+      <Button layoutX="394.0" layoutY="34.0" mnemonicParsing="false" onAction="#showUncompletedBills" text="Uncompleted bills" />
    </children>
 </Pane>

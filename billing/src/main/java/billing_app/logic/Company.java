@@ -43,16 +43,19 @@ public class Company extends Business{
         }
     }
 
-    /* Possibly add check for if bill already is in database */
     public void addUnfinishedBill(Bill bill) {
-        companyUnfinishedBills.add(bill);
+        if (!companyUnfinishedBills.contains(bill)) {
+            companyUnfinishedBills.add(bill);
+        } 
     }
 
-    public void sendFinishedBill(Bill bill, int billId) {
+    public void sendFinishedBill(Bill bill, int billId) throws IllegalAccessException {
         if (bill.legalState()) {
             bill.setBillId(billId);
             this.currentBillId++;
             this.companySentBills.add(bill);
+            this.companyUnfinishedBills.remove(bill);
+            bill.sent = true;
         } else {
             throw new IllegalStateException("Bill is missing legally required fields.");
         }

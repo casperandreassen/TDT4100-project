@@ -4,25 +4,18 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
-
-import billing_app.MainApp;
 import billing_app.items.Bill;
 import billing_app.items.Item;
-import billing_app.logic.Company;
 import billing_app.logic.Customer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -32,7 +25,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -109,7 +101,7 @@ public class CreateBillController extends GenericController implements Controlle
             newBill.addCustomerToBill(this.tmpCustomer);
             customerOnBill.setText(newBill.getBillCustomer().toString());
         } else {
-            throw new IllegalArgumentException("You need to add a customer before you can add it to the bill.");
+            displayMessage("Missing customer info");
         }
     }
 
@@ -118,7 +110,7 @@ public class CreateBillController extends GenericController implements Controlle
         try {
             newBill.removeCustomer();
         } catch (IllegalArgumentException e) {
-            /* Maybe add a popup system for these kinds of messages. */
+            displayMessage("Error removing customer from bill");
         }
     }
 
@@ -166,7 +158,6 @@ public class CreateBillController extends GenericController implements Controlle
                 tmpItem = items.get((int) newValue);
             }
         });
-
         companyItemsContainer.getChildren().add(selectItem);
     }
 
@@ -186,9 +177,7 @@ public class CreateBillController extends GenericController implements Controlle
             tmpItem = newItem;
             addItemToBill();
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-
-            /* Add popup here. */
+            displayMessage("Invalid item fields");
         }
     }
 
@@ -212,30 +201,36 @@ public class CreateBillController extends GenericController implements Controlle
             dueD.setTime(date);
             newBill.addDueDate(dueD);
         } catch (ParseException e) {
-            e.printStackTrace();
+            displayMessage("Date format conversion error");
+        } catch (NullPointerException e) {
+            displayMessage("Missing fields");
         }
 
-
-        
-        if (newBill.legalState()) {
+        try {
             currentCompany.sendFinishedBill(newBill, currentCompany.getCurrentBillId());
             currentCompany.setCurrentBillId(currentCompany.getCurrentBillId() + 1);
             goToView("Overview", "Overview.fxml", (Stage) name.getScene().getWindow());
+        } catch (IllegalAccessException e) {
+            displayMessage(e.toString());
         }
     }
-
+    @FXML
     public void saveUnfinishedBill() {
         currentCompany.addUnfinishedBill(newBill);
         goToView("Overview", "Overview.fxml", (Stage) name.getScene().getWindow());
     }
 
-
-
     @FXML
     public void init() {
+        if (activeBill != null) {
+            this.newBill = activeBill;
+            displayBillItems();
+            customerOnBill.setText(newBill.getBillCustomer().toString());
+        } else {
+            newBill = new Bill(currentCompany);
+        }
         displayCustomersInChoiceBox();
         displayAllCompanyItems();
-        newBill = new Bill(currentCompany);
         currentCompanyInfo.setText(currentCompany.toString());
     }
 }

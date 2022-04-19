@@ -17,12 +17,11 @@ public class Bill {
     /* Dates are an instance of GregorianCalendar since this is the non depreciated version */
 
     private int billId; 
-    private GregorianCalendar dateOfSale;  
+    private GregorianCalendar dateOfSale, dateOfDelivery, dueDate;  
     private HashMap<Item, Integer> itemsOnBill;
     private Company sellingCompany;
     private Customer customer;
-    private GregorianCalendar dateOfDelivery; 
-    private GregorianCalendar dueDate = new GregorianCalendar(2022, 05, 21);
+    public boolean sent = false;
 
     /* For creating an empty bill */
     public Bill(Company sellingCompany) {
@@ -87,7 +86,7 @@ public class Bill {
     }
 
     public void addDueDate(GregorianCalendar dueDate) {
-        if (dueDate != null) {
+        if (!dueDate.after(new Date())) {
             this.dueDate = dueDate;
         } else {
             throw new IllegalArgumentException("Due date cannot be in the past.");
@@ -118,8 +117,11 @@ public class Bill {
         }
     }
 
-    public boolean legalState() {
-        if (itemsOnBill.size() > 0 && customer != null && sellingCompany != null && dateOfSale != null && dateOfDelivery != null && dueDate != null) {
+    public boolean legalState() throws IllegalAccessException {
+        if (sent) {
+            throw new IllegalAccessException("This bill has already been sent and can therefore not be edited.");
+        }
+        if (itemsOnBill.size() > 0 && customer != null && sellingCompany != null && dateOfSale != null && dateOfDelivery != null && dueDate != null && !sent) {
             return true;
         } else {
             return false; 

@@ -9,69 +9,75 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.controllers.CreateBillController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.CreateBillController">
    <children>
-      <Label layoutX="26.0" layoutY="24.0" text="Selling company:" />
-      <Label layoutX="32.0" layoutY="147.0" text="Customer">
+      <Label layoutX="50.0" layoutY="24.0" text="Selling company:" />
+      <Label layoutX="50.0" layoutY="101.0" text="Customer">
          <font>
             <Font size="26.0" />
          </font>
       </Label>
-      <Label layoutX="56.0" layoutY="217.0" text="Use exisiting customer" />
-      <TextField fx:id="name" layoutX="48.0" layoutY="354.0" prefHeight="27.0" prefWidth="258.0" />
-      <Label layoutX="52.0" layoutY="336.0" text="Customer name" />
-      <TextField fx:id="orgId" layoutX="49.0" layoutY="411.0" onKeyTyped="#handleOrganizationalIdChange" prefHeight="26.0" prefWidth="250.0" />
-      <Label layoutX="52.0" layoutY="396.0" text="Organizational id" />
-      <TextField fx:id="address" layoutX="48.0" layoutY="461.0" prefHeight="26.0" prefWidth="256.0" />
-      <Label layoutX="52.0" layoutY="447.0" text="Address" />
-      <TextField fx:id="postalCode" layoutX="45.0" layoutY="509.0" onKeyTyped="#handlePostalCodeInput" prefHeight="26.0" prefWidth="262.0" />
-      <Label layoutX="52.0" layoutY="495.0" text="Post code" />
-      <TextField fx:id="city" layoutX="48.0" layoutY="556.0" prefHeight="26.0" prefWidth="261.0" />
-      <Label layoutX="48.0" layoutY="541.0" text="City" />
-      <Label layoutX="44.0" layoutY="593.0" text="Country" />
-      <TextField fx:id="country" layoutX="49.0" layoutY="613.0" prefHeight="26.0" prefWidth="264.0" />
-      <Label layoutX="432.0" layoutY="154.0" text="Add new item">
+      <Label layoutX="53.0" layoutY="146.0" text="Use exisiting customer" />
+      <TextField fx:id="name" layoutX="50.0" layoutY="335.0" prefHeight="27.0" prefWidth="200.0" />
+      <Label layoutX="50.0" layoutY="315.0" text="Customer name" />
+      <TextField fx:id="orgId" layoutX="50.0" layoutY="390.0" onKeyTyped="#handleOrganizationalIdChange" prefHeight="26.0" prefWidth="200.0" />
+      <Label layoutX="50.0" layoutY="370.0" text="Organizational id" />
+      <TextField fx:id="address" layoutX="50.0" layoutY="445.0" prefHeight="26.0" prefWidth="200.0" />
+      <Label layoutX="50.0" layoutY="425.0" text="Address" />
+      <TextField fx:id="postalCode" layoutX="50.0" layoutY="500.0" onKeyTyped="#handlePostalCodeInput" prefHeight="26.0" prefWidth="200.0" />
+      <Label layoutX="50.0" layoutY="480.0" text="Post code" />
+      <TextField fx:id="city" layoutX="50.0" layoutY="555.0" prefHeight="26.0" prefWidth="200.0" />
+      <Label layoutX="50.0" layoutY="535.0" text="City" />
+      <Label layoutX="50.0" layoutY="590.0" text="Country" />
+      <TextField fx:id="country" layoutX="50.0" layoutY="610.0" prefHeight="26.0" prefWidth="200.0" />
+      <Label layoutX="420.0" layoutY="154.0" text="Add new item">
          <font>
-            <Font size="21.0" />
+            <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="addItemButton" layoutX="918.0" layoutY="65.0" mnemonicParsing="false" onAction="#addItemToBill" text="Add item" />
-      <TextField fx:id="itemName" layoutX="423.0" layoutY="235.0" prefHeight="26.0" prefWidth="205.0" />
-      <Label layoutX="417.0" layoutY="217.0" text="Item name" />
-      <Label layoutX="418.0" layoutY="270.0" text="Item price" />
-      <TextField fx:id="itemPrice" layoutX="423.0" layoutY="292.0" prefHeight="26.0" prefWidth="212.0" />
-      <Label layoutX="422.0" layoutY="328.0" text="Tax on item " />
-      <TextField fx:id="itemTax" layoutX="426.0" layoutY="354.0" prefHeight="26.0" prefWidth="205.0" />
-      <Button fx:id="addItemBill" layoutX="560.0" layoutY="400.0" mnemonicParsing="false" onAction="#addNewItemToBill" text="Add to bill" />
-      <Label layoutX="994.0" layoutY="45.0" text="Select saved item" />
-      <Label layoutX="566.0" layoutY="22.0" text="Create new bill">
-         <font>
-            <Font size="31.0" />
-         </font>
-      </Label>
+      <Button fx:id="addItemButton" layoutX="1334.0" layoutY="80.0" mnemonicParsing="false" onAction="#addItemToBill" text="Add item" />
+      <TextField fx:id="itemName" layoutX="420.0" layoutY="235.0" prefHeight="26.0" prefWidth="200.0" />
+      <Label layoutX="420.0" layoutY="215.0" text="Item name" />
+      <Label layoutX="420.0" layoutY="270.0" text="Item price" />
+      <TextField fx:id="itemPrice" layoutX="420.0" layoutY="290.0" prefHeight="26.0" prefWidth="200.0" />
+      <Label layoutX="420.0" layoutY="325.0" text="Tax on item " />
+      <TextField fx:id="itemTax" layoutX="420.0" layoutY="345.0" prefHeight="26.0" prefWidth="200.0" />
+      <Button fx:id="addItemBill" layoutX="420.0" layoutY="395.0" mnemonicParsing="false" onAction="#addNewItemToBill" text="Add new item to bill" />
+      <Label layoutX="848.0" layoutY="61.0" text="Select saved item" />
       <Label layoutX="1222.0" layoutY="767.0" text="Total without tax" />
       <Label layoutX="1287.0" layoutY="787.0" text="Tax" />
-      <Label layoutX="1262.0" layoutY="804.0" text="Discount" />
       <Label layoutX="1281.0" layoutY="821.0" text="Total" />
       <Button fx:id="saveBillButton" layoutX="849.0" layoutY="792.0" mnemonicParsing="false" onAction="#saveUnfinishedBill" text="Save progress" />
       <Button fx:id="completeBillButton" layoutX="957.0" layoutY="792.0" mnemonicParsing="false" onAction="#completeBill" text="Complete bill" />
-      <TilePane fx:id="customerChoicePane" layoutX="32.0" layoutY="237.0" prefHeight="67.0" prefWidth="289.0" />
-      <Label fx:id="currentCompanyInfo" layoutX="29.0" layoutY="52.0" text="Label" />
-      <Button fx:id="addExistingCustomerButton" layoutX="190.0" layoutY="213.0" mnemonicParsing="false" onAction="#addCustomer" text="Add" />
-      <Button fx:id="addNewCustomerButton" layoutX="243.0" layoutY="660.0" mnemonicParsing="false" onAction="#addNewCustomer" text="Add new" />
-      <Label fx:id="customerOnBill" layoutX="903.0" layoutY="14.0" text="Label" />
-      <Label fx:id="legalOrgId" layoutX="243.0" layoutY="396.0" text="Label" textFill="RED" />
+      <TilePane fx:id="customerChoicePane" layoutX="51.0" layoutY="167.0" prefHeight="67.0" prefWidth="198.0" />
+      <Label fx:id="currentCompanyInfo" layoutX="50.0" layoutY="52.0" text="Label" />
+      <Button fx:id="addExistingCustomerButton" layoutX="51.0" layoutY="244.0" mnemonicParsing="false" onAction="#addCustomer" text="Add to bill" />
+      <Button fx:id="addNewCustomerButton" layoutX="50.0" layoutY="660.0" mnemonicParsing="false" onAction="#addNewCustomer" text="Add new customer" />
+      <Label fx:id="customerOnBill" layoutX="847.0" layoutY="24.0" prefHeight="25.0" prefWidth="554.0" text="CUSTOMER INFO" wrapText="true" />
+      <Label fx:id="legalOrgId" layoutX="210.0" layoutY="370.0" text="Invalid" textFill="RED" />
       <VBox fx:id="itemsOnBill" layoutX="847.0" layoutY="116.0" prefHeight="650.0" prefWidth="554.0" style="-fx-background-color: white; -fx-border-color: black;" />
-      <TilePane fx:id="companyItemsContainer" layoutX="990.0" layoutY="63.0" prefHeight="31.0" prefWidth="408.0" />
+      <TilePane fx:id="companyItemsContainer" layoutX="849.0" layoutY="77.0" prefHeight="31.0" prefWidth="499.0" />
       <Label fx:id="totalWithoutTax" layoutX="1324.0" layoutY="767.0" text="Label" />
       <Label fx:id="totalTax" layoutX="1324.0" layoutY="787.0" text="Label" />
-      <Label fx:id="billDiscount" layoutX="1324.0" layoutY="804.0" text="Label" />
       <Label fx:id="billTotal" layoutX="1324.0" layoutY="821.0" text="Label" />
-      <DatePicker fx:id="dateOfSale" layoutX="422.0" layoutY="474.0" />
-      <DatePicker fx:id="deliveryDate" layoutX="422.0" layoutY="528.0" />
-      <DatePicker fx:id="dueDate" layoutX="416.0" layoutY="580.0" prefHeight="26.0" prefWidth="198.0" />
-      <Label layoutX="423.0" layoutY="456.0" text="Date of sale" />
-      <Label layoutX="430.0" layoutY="514.0" text="Delivery date" />
-      <Label layoutX="420.0" layoutY="561.0" text="Due date" />
+      <DatePicker fx:id="dateOfSale" layoutX="420.0" layoutY="520.0" onAction="#addDateOfSale" prefWidth="200.0" />
+      <DatePicker fx:id="deliveryDate" layoutX="420.0" layoutY="575.0" onAction="#addDateOfDelivery" prefWidth="200.0" />
+      <DatePicker fx:id="dueDate" layoutX="420.0" layoutY="630.0" onAction="#addDueDate" prefHeight="26.0" prefWidth="200.0" />
+      <Label layoutX="420.0" layoutY="500.0" text="Date of sale" />
+      <Label layoutX="420.0" layoutY="555.0" text="Delivery date" />
+      <Label layoutX="420.0" layoutY="610.0" text="Due date" />
+      <Label layoutX="847.0" layoutY="6.0" text="Customer" />
+      <Button layoutX="720.0" layoutY="11.0" mnemonicParsing="false" onAction="#removeCustomer" text="Remove customer" />
+      <Label layoutX="50.0" layoutY="284.0" text="Create new customer">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="420.0" layoutY="463.0" text="Dates">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button layoutX="50.0" layoutY="792.0" mnemonicParsing="false" onAction="#exitCreateBill" text="EXIT" />
    </children>
 </Pane>

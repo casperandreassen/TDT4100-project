@@ -4,11 +4,11 @@ import java.util.UUID;
 
 public class Customer extends Business{
     
-    UUID customerId;
-
     public Customer(UUID customerId) {
-        this.customerId = customerId;
+        if (customerId == null) {
+            setId(UUID.randomUUID());
+        } else {
+            businessId = customerId;
+        }
     }
-
-
 }

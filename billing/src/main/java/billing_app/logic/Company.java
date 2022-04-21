@@ -3,11 +3,10 @@ package billing_app.logic;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
-import billing_app.MainApp;
 import billing_app.items.Bill;
 import billing_app.items.Item;
 
@@ -17,10 +16,15 @@ public class Company extends Business{
     private int currentBillId;
     public Collection<Item> allCompanyItems; 
     public Collection<Customer> allCompanyCustomers; 
-    public Collection<Bill> companySentBills;
-    public Collection<Bill> companyUnfinishedBills;
+    public List<Bill> companySentBills;
+    public List<Bill> companyUnfinishedBills;
     
-    public Company() {
+    public Company(UUID id) {
+        if (id == null) {
+            setId(UUID.randomUUID());
+        } else {
+            setId(id);
+        }
         this.allCompanyItems = new ArrayList<Item>();
         this.allCompanyCustomers = new ArrayList<Customer>();
         this.companySentBills = new ArrayList<Bill>();
@@ -33,6 +37,10 @@ public class Company extends Business{
         } else {
             throw new IllegalArgumentException("Customer already customer to company");
         }
+    }
+
+    public Collection<Customer> getCompanyCustomers() {
+        return this.allCompanyCustomers;
     }
 
     public void addItemToCompany(Item item) {
@@ -49,6 +57,12 @@ public class Company extends Business{
         } 
     }
 
+    public void addSentBill(Bill bill) {
+        if (!companySentBills.contains(bill)) {
+            companySentBills.add(bill);
+        }
+    }
+
     public void sendFinishedBill(Bill bill, int billId) throws IllegalAccessException {
         if (bill.legalState()) {
             bill.setBillId(billId);
@@ -61,6 +75,14 @@ public class Company extends Business{
         }
     }
 
+    public Collection<Bill> getCompanySentBills() {
+        return this.companySentBills;
+    }
+
+    public Collection<Bill> getCompanyUnfinishedBills() {
+        return this.companyUnfinishedBills;
+    }
+
 
     public FileInputStream getCompanyLogoFileStream() throws FileNotFoundException {
         return new FileInputStream(this.companyLogoPath);
@@ -68,6 +90,10 @@ public class Company extends Business{
 
     public void setCompanyLogoPath(String pathToFile) {
         this.companyLogoPath = pathToFile;
+    }
+
+    public String getCompanyLogoPath() {
+        return this.companyLogoPath;
     }
 
     public int getCurrentBillId() {
@@ -80,6 +106,30 @@ public class Company extends Business{
 
     public Collection<Item> getCompanyItems() {
         return this.allCompanyItems;
+    }
+
+    public double calculateTotalRevenue() {
+        double total = 0;
+        for (Bill bill : companySentBills) {
+            total += bill.getTotalCostOfBill();
+        }
+        return total;
+    }
+
+    public double calculateTotalTax() {
+        double totalTax = 0; 
+        for (Bill bill : companySentBills) {
+            totalTax += bill.getTotalTaxOnBill();
+        }
+        return totalTax;
+    }
+
+    public double calculateTotalRevenueWithoutTax() {
+        double total = 0; 
+        for (Bill bill : companySentBills) {
+            total += bill.getTotalCostOfBill() - bill.getTotalTaxOnBill();
+        }
+        return total;
     }
 
 

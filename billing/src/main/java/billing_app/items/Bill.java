@@ -1,11 +1,10 @@
 package billing_app.items;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.UUID;
 
 import billing_app.logic.Company;
 import billing_app.logic.Customer;
@@ -15,8 +14,8 @@ public class Bill {
 
 
     /* Dates are an instance of GregorianCalendar since this is the non depreciated version */
-
-    private int billId; 
+    private UUID billId;
+    private int billNumber;
     private GregorianCalendar dateOfSale, dateOfDelivery, dueDate;  
     private HashMap<Item, Integer> itemsOnBill;
     private Company sellingCompany;
@@ -24,12 +23,44 @@ public class Bill {
     public boolean sent = false;
 
     /* For creating an empty bill */
-    public Bill(Company sellingCompany) {
-        if (sellingCompany.getOrganizationalId() != null && this.billId == 0) {
+    public Bill(Company sellingCompany, UUID billUUID) {
+        if (sellingCompany.getOrganizationalId() != null) {
             this.sellingCompany = sellingCompany;
             this.itemsOnBill = new HashMap<Item, Integer>();
+            dateOfSale = new GregorianCalendar(0,0,0);
+            dateOfDelivery = new GregorianCalendar(0,0,0);
+            dueDate = new GregorianCalendar(0,0,0);
+            if (billId == null) {
+                this.billId = UUID.randomUUID();
+            } else {
+                this.billId = billUUID;
+            }
         }
     }
+
+    public void setItems(Item item, int number) {
+        this.itemsOnBill.put(item, number);
+    }
+
+    public void setBillId(int billId) {
+        if (billId != 0) {
+            this.billNumber = billId;
+        }
+    }
+
+    public int getBillId() {
+        return this.billNumber;
+    }
+
+    public UUID getBillUUID() {
+        return this.billId;
+    }
+
+    public void setBillUUID(UUID id) {
+        this.billId = id;
+    }
+
+
 
     public void addItemToBill(Item item) {
         if (!(this.itemsOnBill.putIfAbsent(item, 1) == null)) {
@@ -74,6 +105,9 @@ public class Bill {
     }
 
     public GregorianCalendar getDateOfSale() {
+        if (this.dateOfSale == null) {
+            return new GregorianCalendar(0, 0, 0);
+        }
         return this.dateOfSale;
     }
 
@@ -82,6 +116,9 @@ public class Bill {
     }
 
     public GregorianCalendar getDateOfDelivery() {
+        if (this.dateOfDelivery == null) {
+            return new GregorianCalendar(0,0,0);
+        }
         return this.dateOfDelivery;
     }
 
@@ -94,12 +131,12 @@ public class Bill {
     }
 
     public GregorianCalendar getDueDate() {
+        if (this.dueDate == null) {
+            return new GregorianCalendar(0,0,0);
+        }
         return this.dueDate;
     }
 
-    public void setBillId(int billId) {
-        this.billId = billId;
-    }
 
     public HashMap<Item, Integer> getItems() {
         return this.itemsOnBill;
@@ -128,6 +165,13 @@ public class Bill {
         }
     }
 
+    public boolean minimumLegalState() {
+        if (customer != null && itemsOnBill.size() > 0 && sellingCompany != null) {
+            return true;
+        }
+        return false;
+    }
+
     public double getTotalCostOfBill() {
         double totalCost = 0;
         for (Item item : itemsOnBill.keySet()) {
@@ -143,6 +187,11 @@ public class Bill {
         }
         return totalTax;
     }
+
+    public Company getBillCompany() {
+        return this.sellingCompany;
+    }
+
 
 
 

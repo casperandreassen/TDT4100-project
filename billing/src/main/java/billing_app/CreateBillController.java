@@ -1,4 +1,4 @@
-package billing_app.controllers;
+package billing_app;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,6 +16,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -57,7 +59,7 @@ public class CreateBillController extends GenericController implements Controlle
     Button addItemButton, addItemBill, saveBillButton, completeBillButton, addExistingCustomerButton, addNewCustomerButton;
 
     @FXML
-    Label currentCompanyInfo, customerOnBill, totalWithoutTax, billDiscount, billTotal, totalTax;
+    Label currentCompanyInfo, customerOnBill, totalWithoutTax, billTotal, totalTax;
 
     @FXML
     DatePicker dateOfSale, deliveryDate, dueDate;
@@ -109,6 +111,7 @@ public class CreateBillController extends GenericController implements Controlle
     public void removeCustomer() {
         try {
             newBill.removeCustomer();
+            customerOnBill.setText("NO CUSTOMER");
         } catch (IllegalArgumentException e) {
             displayMessage("Error removing customer from bill");
         }
@@ -124,28 +127,43 @@ public class CreateBillController extends GenericController implements Controlle
             Integer numberOfItemInCart = newBill.getItems().get(item);
             Label itemName = new Label("Item: " + item.getName());
             Label numberOfItem = new Label(Integer.toString(numberOfItemInCart));
-            Label priceOfItem = new Label("Sum: " + Double.toString(item.getPrice() * numberOfItemInCart));
-            Label taxOfItems = new Label("Tax:" + Double.toString((item.getPrice() * numberOfItemInCart) * (item.getTaxOnItem() / 10)));
-            /* Button plus = new Button("+");
-            plus.setOnAction(event -> changeNumberOfItem(event));
+            Label priceOfItem = new Label("Sum: " + String.format("%.2f", item.getPrice() * numberOfItemInCart));
+            Label taxOfItems = new Label("Tax:" + String.format("%.2f", (item.getPrice() * numberOfItemInCart) * (item.getTaxOnItem() / 10)));
+            Button plus = new Button("+");
+            plus.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    newBill.addItemToBill(item);
+                    displayBillItems();
+                }
+            });
             Button minus = new Button("-");
-            plus.setOnAction(event -> changeNumberOfItem(event)); */
+            minus.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    newBill.removeItemFromBill(item);
+                    displayBillItems();
+                }
+            });
             StackPane.setAlignment(itemName, Pos.TOP_LEFT);
             StackPane.setAlignment(numberOfItem, Pos.BOTTOM_LEFT);
             StackPane.setAlignment(priceOfItem, Pos.BOTTOM_RIGHT);
             StackPane.setAlignment(taxOfItems, Pos.TOP_RIGHT);
-            /* StackPane buttons = new StackPane();
-            buttons.getChildren().addAll(plus, minus); */
-            /* StackPane.setAlignment(buttons, Pos.CENTER); */
-            pane.getChildren().addAll(itemName, numberOfItem, priceOfItem);
+            StackPane buttons = new StackPane();
+            buttons.setMaxWidth(50);
+            StackPane.setAlignment(plus, Pos.CENTER_LEFT);
+            StackPane.setAlignment(minus, Pos.CENTER_RIGHT);
+            buttons.getChildren().addAll(plus, minus);
+            StackPane.setAlignment(buttons, Pos.CENTER);
+            pane.getChildren().addAll(itemName, numberOfItem, priceOfItem, buttons);
             itemsOnBill.getChildren().add(pane);
         }
         Double totalBillCost = newBill.getTotalCostOfBill();
         Double totalBillTax = newBill.getTotalTaxOnBill();
 
-        totalWithoutTax.setText(Double.toString(totalBillCost - totalBillTax));
-        totalTax.setText(Double.toString(totalBillTax));
-        billTotal.setText(Double.toString(totalBillCost));
+        totalWithoutTax.setText(String.format("%.2f", totalBillCost - totalBillTax));
+        totalTax.setText(String.format("%.2f", totalBillTax));
+        billTotal.setText(String.format("%.2f", totalBillCost));
     }
 
     @FXML
@@ -172,32 +190,55 @@ public class CreateBillController extends GenericController implements Controlle
     @FXML 
     public void addNewItemToBill() {
         try {
-            Item newItem = new Item(itemName.getText(), Double.valueOf(itemPrice.getText()), Double.valueOf(itemTax.getText()));
+            Item newItem = new Item(null, itemName.getText(), Double.valueOf(itemPrice.getText()), Double.valueOf(itemTax.getText()));
             currentCompany.addItemToCompany(newItem);
             tmpItem = newItem;
             addItemToBill();
+            displayBillItems();
+            displayAllCompanyItems();
         } catch (IllegalArgumentException e) {
             displayMessage("Invalid item fields");
         }
     }
 
     @FXML
-    public void completeBill() {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        GregorianCalendar dateOs = new GregorianCalendar();
-        GregorianCalendar dateOd = new GregorianCalendar();
-        GregorianCalendar dueD = new GregorianCalendar();
-
+    public void addDateOfSale() {
         try {
+            GregorianCalendar dateOs = new GregorianCalendar();
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Date date = df.parse(dateOfSale.getValue().toString());
             dateOs.setTime(date);
             newBill.addDateOfSale(dateOs);
+        } catch (ParseException e) {
+            displayMessage("Date format conversion error");
+        } catch (NullPointerException e) {
+            displayMessage("Missing fields");
+        }
+    }
 
-            df.parse(deliveryDate.getValue().toString());
+    @FXML
+    public void addDateOfDelivery() {
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            GregorianCalendar dateOd = new GregorianCalendar();
+            Date date = df.parse(dateOfSale.getValue().toString());
+            date = df.parse(deliveryDate.getValue().toString());
             dateOd.setTime(date);
             newBill.addDateOfDelivery(dateOd);
+        } catch (ParseException e) {
+            displayMessage("Date format conversion error");
+        } catch (NullPointerException e) {
+            displayMessage("Missing fields");
+        }
+    }
 
-            df.parse(dueDate.getValue().toString());
+    @FXML
+    public void addDueDate() {
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            GregorianCalendar dueD = new GregorianCalendar();
+            Date date = df.parse(dateOfSale.getValue().toString());
+            date = df.parse(dueDate.getValue().toString());
             dueD.setTime(date);
             newBill.addDueDate(dueD);
         } catch (ParseException e) {
@@ -205,7 +246,10 @@ public class CreateBillController extends GenericController implements Controlle
         } catch (NullPointerException e) {
             displayMessage("Missing fields");
         }
+    }
 
+    @FXML
+    public void completeBill() {
         try {
             currentCompany.sendFinishedBill(newBill, currentCompany.getCurrentBillId());
             currentCompany.setCurrentBillId(currentCompany.getCurrentBillId() + 1);
@@ -216,7 +260,14 @@ public class CreateBillController extends GenericController implements Controlle
     }
     @FXML
     public void saveUnfinishedBill() {
-        currentCompany.addUnfinishedBill(newBill);
+        if (newBill.minimumLegalState()) {
+            currentCompany.addUnfinishedBill(newBill);
+            goToView("Overview", "Overview.fxml", (Stage) name.getScene().getWindow());
+        }
+    }
+
+    @FXML
+    public void exitCreateBill() {
         goToView("Overview", "Overview.fxml", (Stage) name.getScene().getWindow());
     }
 
@@ -225,9 +276,14 @@ public class CreateBillController extends GenericController implements Controlle
         if (activeBill != null) {
             this.newBill = activeBill;
             displayBillItems();
-            customerOnBill.setText(newBill.getBillCustomer().toString());
+            try {
+                customerOnBill.setText(newBill.getBillCustomer().toString());
+            } catch (NullPointerException e) {
+                customerOnBill.setText("NO CUSTOMER");
+            }
+
         } else {
-            newBill = new Bill(currentCompany);
+            newBill = new Bill(currentCompany, null);
         }
         displayCustomersInChoiceBox();
         displayAllCompanyItems();

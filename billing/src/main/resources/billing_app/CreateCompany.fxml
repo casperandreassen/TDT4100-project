@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="496.0" prefWidth="210.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.controllers.CreateCompanyController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="210.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.CreateCompanyController">
    <children>
       <Label layoutX="33.0" layoutY="62.0" text="Create new company">
          <font>
@@ -71,6 +71,7 @@
             <Font size="9.0" />
          </font>
       </Label>
-      <Label fx:id="logoPath" layoutX="29.0" layoutY="414.0" text="Label" />
+      <Button layoutX="118.0" layoutY="540.0" mnemonicParsing="false" onAction="#loadCompany" text="select save" />
+      <Label layoutX="17.0" layoutY="545.0" text="Load from save" />
    </children>
 </Pane>

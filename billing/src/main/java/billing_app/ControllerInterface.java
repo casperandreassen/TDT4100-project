@@ -1,4 +1,4 @@
-package billing_app.controllers;
+package billing_app;
 
 public interface ControllerInterface {
     

@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane fx:id="root_pane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="0.0" prefHeight="850.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.controllers.OverviewController">
+<Pane fx:id="root_pane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="0.0" prefHeight="850.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.OverviewController">
    <children>
       <VBox fx:id="main_vbox" layoutX="18.0" layoutY="62.0" prefHeight="738.0" prefWidth="802.0" style="-fx-border-color: black; -fx-background-color: white;" />
-      <Button fx:id="knapp" layoutX="334.0" layoutY="813.0" mnemonicParsing="false" text="Next " />
-      <Button layoutX="258.0" layoutY="812.0" mnemonicParsing="false" text="Previous" />
+      <Button fx:id="knapp" layoutX="334.0" layoutY="820.0" mnemonicParsing="false" onAction="#nextPage" text="Next " />
+      <Button layoutX="259.0" layoutY="820.0" mnemonicParsing="false" onAction="#previousPage" text="Previous" />
       <Pane fx:id="company_avatar_pane" layoutX="1359.0" layoutY="11.0" prefHeight="70.0" prefWidth="70.0" />
       <Button layoutX="1311.0" layoutY="800.0" mnemonicParsing="false" onAction="#goToCreateBill" prefHeight="26.0" prefWidth="95.0" text="New bill" />
       <StackPane fx:id="companyInfoPane" layoutX="1155.0" layoutY="18.0" prefHeight="49.0" prefWidth="217.0" />
-      <Button layoutX="295.0" layoutY="34.0" mnemonicParsing="false" onAction="#showCompletedBills" style="-fx-background-color: lightblue;" text="Completed bills" />
-      <Button layoutX="394.0" layoutY="34.0" mnemonicParsing="false" onAction="#showUncompletedBills" text="Uncompleted bills" />
+      <Button layoutX="295.0" layoutY="34.0" mnemonicParsing="false" onAction="#showCompletedBills" text="Completed bills" />
+      <Button layoutX="407.0" layoutY="34.0" mnemonicParsing="false" onAction="#showUncompletedBills" text="Uncompleted bills" />
+      <Label layoutX="972.0" layoutY="335.0" text="Total revenue from sent bills" />
+      <Label layoutX="972.0" layoutY="312.0" text="Total tax from sent bills" />
+      <Label layoutX="972.0" layoutY="289.0" text="Total revenue from sent bills without tax" />
+      <Label fx:id="totalWithoutTax" layoutX="1212.0" layoutY="289.0" text="Label" />
+      <Label fx:id="totalTax" layoutX="1212.0" layoutY="312.0" text="Label" />
+      <Label fx:id="totalRevenue" layoutX="1212.0" layoutY="335.0" text="Label" />
+      <Button layoutX="18.0" layoutY="14.0" mnemonicParsing="false" onAction="#saveCompanyState" text="Save" />
+      <Label fx:id="pageLabel" layoutX="320.0" layoutY="801.0" text="1/1" />
    </children>
 </Pane>

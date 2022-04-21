@@ -1,4 +1,4 @@
-package billing_app.controllers;
+package billing_app;
 
 import java.io.IOException;
 import java.net.URL;
@@ -76,7 +76,7 @@ public abstract class GenericController {
 
     public void goToView(String title, String view, Stage prevStage) {
         try {
-            URL fileUrl = new URL(String.format("file://%1$s/billing/target/classes/billing_app/%2$s", System.getProperty("user.dir"), view));
+            URL fileUrl = getClass().getResource(view);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(fileUrl);
             Stage stage = new Stage();
@@ -95,7 +95,7 @@ public abstract class GenericController {
 
     public void goToView(String title, String view, Stage prevStage, Bill editBill) {
         try {
-            URL fileUrl = new URL(String.format("file://%1$s/billing/target/classes/billing_app/%2$s", System.getProperty("user.dir"), view));
+            URL fileUrl = getClass().getResource(view);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(fileUrl);
             Stage stage = new Stage();
@@ -144,7 +144,7 @@ public abstract class GenericController {
         }
     }
 
-    /* This is to get "live" updated validity for the orgid. */
+    /* This is kind of a hacky way to do it, should instead ask the class if its legal or not. */
     @FXML
     private void handleOrganizationalIdChange() {
         String tmpOrgId = orgId.getText();

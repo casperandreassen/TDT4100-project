@@ -45,5 +45,10 @@ public class OrganizationalId {
         } else {
             return false;
         }
-    }    
+    } 
+
+    @Override
+    public String toString() {
+        return organizationalId;
+    }
 }

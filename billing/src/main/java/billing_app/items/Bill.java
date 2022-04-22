@@ -69,14 +69,10 @@ public class Bill {
     }
 
     public void removeItemFromBill(Item item) {
-        try {
-            if (this.itemsOnBill.get(item) == 1) {
-                this.itemsOnBill.remove(item);
-            } else if (this.itemsOnBill.get(item) != null) {
-                this.itemsOnBill.put(item, this.itemsOnBill.get(item) - 1);
-            }
-        } catch (Exception e) {
-            //TODO: handle exception
+        if (this.itemsOnBill.get(item) == 1) {
+            this.itemsOnBill.remove(item);
+        } else if (this.itemsOnBill.get(item) != null) {
+            this.itemsOnBill.put(item, this.itemsOnBill.get(item) - 1);
         }
     }
 
@@ -158,18 +154,20 @@ public class Bill {
         if (sent) {
             throw new IllegalAccessException("This bill has already been sent and can therefore not be edited.");
         }
-        if (itemsOnBill.size() > 0 && customer != null && sellingCompany != null && dateOfSale != null && dateOfDelivery != null && dueDate != null && !sent) {
+        GregorianCalendar baseDate = new GregorianCalendar(0,0,0);
+        if (itemsOnBill.size() > 0 && customer != null && sellingCompany != null && !this.dateOfSale.equals(baseDate) && !this.dateOfDelivery.equals(baseDate) && !this.dueDate.equals(baseDate) && !sent) {
             return true;
         } else {
-            return false; 
+            return false;
         }
     }
 
-    public boolean minimumLegalState() {
+    public boolean minimumLegalState() throws IllegalAccessException {
         if (customer != null && itemsOnBill.size() > 0 && sellingCompany != null) {
             return true;
+        } else {
+            throw new IllegalAccessException();
         }
-        return false;
     }
 
     public double getTotalCostOfBill() {

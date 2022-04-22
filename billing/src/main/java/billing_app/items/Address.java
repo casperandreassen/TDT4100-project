@@ -4,12 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.FileSystems;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import billing_app.MainApp;
+
 
 public class Address {
 
@@ -19,25 +22,17 @@ public class Address {
     String country;
     public Map<String, String> postalCodes = new HashMap<String, String>();
 
-    public Address() {
+    public Address() throws FileNotFoundException, IOException, URISyntaxException {
         createHashMap();
     }
 
     /* Takes around 4-5 ms to create the hashmap */
-    private void createHashMap() {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(FileSystems.getDefault().getPath(System.getProperty("user.dir")) + "/billing/store/static/postnummer.txt"));
-
-            postalCodes = reader.lines()
-                .map(s -> s.split("\\t", 2))
-                .collect(Collectors.toMap(s -> s[0], s -> s[1]));
-            
-            reader.close();
-        } catch (FileNotFoundException e) {
-            
-        } catch (IOException e) {
-            MainApp.printToConsole("IO Error");
-        }
+    private void createHashMap() throws FileNotFoundException, IOException, URISyntaxException {
+        URL pathToFile = MainApp.class.getResource("postnummer.txt");
+        BufferedReader reader = new BufferedReader(new FileReader(Paths.get(pathToFile.toURI()).toFile()));
+        postalCodes = reader.lines()
+            .map(s -> s.split("\\t", 2))
+            .collect(Collectors.toMap(s -> s[0], s -> s[1]));
     }
 
     public String getAddress() {
@@ -78,16 +73,6 @@ public class Address {
 
     @Override
     public String toString() {
-        return String.format("%1$s, %2$s, \n %3$s, %4$s.", this.address, this.postalCode, this.city, this.country);
-    }
-
-    public static void main(String[] args) {
-        Address customerAddress = new Address();
-        long start = System.currentTimeMillis();
-        customerAddress.createHashMap();
-        System.out.println(customerAddress.postalCodes.get("2013"));
-        long end = System.currentTimeMillis();
-        long elapsedTime = end - start;
-        System.out.println("Total time: " + Long.toString(elapsedTime));
+        return String.format("%1$s, %2$s, %3$s, %4$s.", this.address, this.postalCode, this.city, this.country);
     }
 }

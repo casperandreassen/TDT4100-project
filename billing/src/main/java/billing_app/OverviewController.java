@@ -1,9 +1,11 @@
 package billing_app;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import billing_app.items.Bill;
@@ -21,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class OverviewController extends GenericController implements ControllerInterface {
@@ -108,14 +111,17 @@ public class OverviewController extends GenericController implements ControllerI
             Label customer;
             Label totalMva;
             Label totalCost;
+            Label billNumber;
             try {
                 customer = new Label("Customer: " + bill.getBillCustomer().getName());
                 totalMva = new Label("Tax: " + String.format("%.2f", bill.getTotalTaxOnBill()));
                 totalCost = new Label("Total: " + String.format("%.2f", bill.getTotalCostOfBill()));
+                billNumber = new Label("Bill number: " + String.format("%s", bill.getBillId()));
             } catch (NullPointerException e) {
                 customer = new Label("Customer: N/A");
                 totalMva = new Label("Tax: 0.0");
                 totalCost = new Label("Total: 0.0");
+                billNumber = new Label("Bill number: N/A");
             }
             String date = "N/A";
             try {
@@ -141,8 +147,9 @@ public class OverviewController extends GenericController implements ControllerI
             StackPane.setAlignment(totalMva, Pos.CENTER_RIGHT);
             StackPane.setAlignment(totalCost, Pos.BOTTOM_RIGHT);
             StackPane.setAlignment(dueDate, Pos.BOTTOM_LEFT);
+            StackPane.setAlignment(billNumber, Pos.TOP_RIGHT);
 
-            pane.getChildren().addAll(customer, totalMva, totalCost, dueDate);
+            pane.getChildren().addAll(customer, totalMva, totalCost, dueDate, billNumber);
             main_vbox.getChildren().add(pane);
             }
 
@@ -161,7 +168,19 @@ public class OverviewController extends GenericController implements ControllerI
     @FXML
     public void saveCompanyState() {
         SaveCompany save = new SaveCompany();
-        save.saveCompanyState(currentCompany);
+        try {
+            save.saveCompanyState(currentCompany, selectSaveLocationHandler());   
+        } catch (IOException e) {
+            displayMessage("Could not save to file");
+        }
+    }
+
+    private String selectSaveLocationHandler() {
+        Stage stage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select where to save");
+        File selectedLocation = fileChooser.showSaveDialog(stage);
+        return Paths.get(selectedLocation.getAbsolutePath()).toString() + ".txt";
     }
 
 
@@ -170,14 +189,15 @@ public class OverviewController extends GenericController implements ControllerI
         displayBillsInVbox(currentCompany.companySentBills);
         try {
             ImageView company_avatar = new ImageView(new Image(currentCompany.getCompanyLogoFileStream()));
-            company_avatar.setFitHeight(50);
+            company_avatar.setFitHeight(50); 
             company_avatar.setFitWidth(60);
             company_avatar_pane.getChildren().add(company_avatar);
             
         } catch (FileNotFoundException e) {
-            MainApp.printToConsole(e.toString());
+            displayMessage("Could not locate image.");
+        } catch (NullPointerException e) {
+            displayMessage("Invalid file");
         }
-        /* Should also catch IOException here */
 
         Label companyName = new Label(currentCompany.getName());
         Label companyAddress = new Label(currentCompany.getAddress().toString());

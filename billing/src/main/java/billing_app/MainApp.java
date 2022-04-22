@@ -1,7 +1,6 @@
 package billing_app;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -13,11 +12,6 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         Application.launch(args);
-    }
-
-    public static void printToConsole(String s) {
-        
-        System.out.println(s);
     }
 
     @Override

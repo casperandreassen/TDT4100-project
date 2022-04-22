@@ -1,7 +1,9 @@
 package billing_app;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
 import billing_app.logic.Company;
@@ -31,16 +33,11 @@ public class CreateCompanyController extends GenericController implements Contro
 
     @FXML
     private void handleLogoSelect() {
-        try {
-            Stage stage = new Stage();
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Select company logo");
-            File selectedFile = fileChooser.showOpenDialog(stage);
-            tmpLogoPath = Paths.get(selectedFile.getAbsolutePath()).toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            /* Add some logic for displaying popup error messages. */
-        }
+        Stage stage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select company logo");
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        tmpLogoPath = Paths.get(selectedFile.getAbsolutePath()).toString();
     }
 
     @FXML
@@ -61,15 +58,21 @@ public class CreateCompanyController extends GenericController implements Contro
         fileChooser.setTitle("Select savefile");
         File selectedFile = fileChooser.showOpenDialog(stage);
         SaveCompany load = new SaveCompany();
-        currentCompany = load.loadCompanyFromFile(Paths.get(selectedFile.getAbsolutePath()).toString());
+        try {
+            currentCompany = load.loadCompanyFromFile(Paths.get(selectedFile.getAbsolutePath()).toString());
+        } catch (FileNotFoundException e) {
+            displayMessage("Could not locate savefile");
+        } catch (IOException e) {
+            displayMessage("Error reading from savefile");
+        } catch (URISyntaxException e) {
+            displayMessage("Could not locate postnummer text file");
+        }
         goToView("Overview", "Overview.fxml", (Stage) selectFileButton.getScene().getWindow());
     }
 
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
-		
 	}
 }
 

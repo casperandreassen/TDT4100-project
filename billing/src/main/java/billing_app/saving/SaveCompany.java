@@ -2,9 +2,11 @@ package billing_app.saving;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,7 +14,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
-import billing_app.MainApp;
 import billing_app.items.Address;
 import billing_app.items.Bill;
 import billing_app.items.Item;
@@ -23,9 +24,8 @@ import billing_app.logic.Customer;
 public class SaveCompany implements SaveState{
 
     @Override
-    public void saveCompanyState(Company company) {
-        try {
-            FileWriter writeCurrentState = new FileWriter(new File(System.getProperty("user.home") + "/Documents/save.txt"));
+    public void saveCompanyState(Company company, String filePath) throws IOException {
+        try (FileWriter writeCurrentState = new FileWriter(new File(filePath));) {
             writeCurrentState.write(company.getName());
             writeCurrentState.write(System.lineSeparator());
             writeCurrentState.write(company.getBusinessId().toString());
@@ -85,25 +85,22 @@ public class SaveCompany implements SaveState{
             }
             writeCurrentState.close();
         } catch (IOException e) {
+            throw new IOException();
         }
         
         
     }
 
     @Override
-    public Company loadCompanyFromFile(String filePath) {
+    public Company loadCompanyFromFile(String filePath) throws FileNotFoundException, IOException, URISyntaxException {
         List<String> lines = new ArrayList<String>();
-        try {
-            BufferedReader lineReader = new BufferedReader(new FileReader(filePath));
+        try (BufferedReader lineReader = new BufferedReader(new FileReader(filePath))) {
             String text = null;
             lines = new ArrayList<String>();
  
             while ((text = lineReader.readLine()) != null) {
-                lines.add(text);
+            lines.add(text);
             }
-            lineReader.close();
-
-        } catch (IOException e) {
         }
         int lastStop = 0;
         Company newCompany = new Company(UUID.fromString(lines.get(1)));
@@ -138,11 +135,12 @@ public class SaveCompany implements SaveState{
         }
         int numberOfSentBills = Integer.valueOf(lines.get(lastStop + 1));
         lastStop++;
-        for (int i = 0, l = lastStop + 1; i < numberOfSentBills; i++, l += 9) {
+        for (int i = 0, l = lastStop + 1; i < numberOfSentBills; i++, l += 10) {
             Bill newBill = new Bill(newCompany, UUID.fromString(lines.get(l)));
-            String[] dateOfSaleString = lines.get(l + 1).split("[-.,:\n]");
-            String[] dateOfDeliveryString = lines.get(l + 2).split("[-.,:\n]");
-            String[] dueDateString = lines.get(l + 3).split("[-.,:\n]");
+            newBill.setBillId(Integer.valueOf(lines.get(l + 1)));
+            String[] dateOfSaleString = lines.get(l + 2).split("[-.,:\n]");
+            String[] dateOfDeliveryString = lines.get(l + 3).split("[-.,:\n]");
+            String[] dueDateString = lines.get(l + 4).split("[-.,:\n]");
             try {
                 newBill.addDateOfSale(new GregorianCalendar(Integer.valueOf(dateOfSaleString[0]), Integer.valueOf(dateOfSaleString[1]), Integer.valueOf(dateOfSaleString[2])));
                 newBill.addDateOfDelivery(new GregorianCalendar(Integer.valueOf(dateOfDeliveryString[0]), Integer.valueOf(dateOfDeliveryString[1]), Integer.valueOf(dateOfDeliveryString[2])));
@@ -152,7 +150,7 @@ public class SaveCompany implements SaveState{
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            for (int v = 0, n = l + 5; v < Integer.valueOf(lines.get(l + 4)); v++, n += 2) {
+            for (int v = 0, n = l + 6; v < Integer.valueOf(lines.get(l + 5)); v++, n += 2) {
                 for (Item item : newCompany.getCompanyItems()) {
                     if (item.getItemId().toString().equals(lines.get(n))) {
                         newBill.setItems(item, Integer.valueOf(lines.get(n + 1)));
@@ -173,11 +171,12 @@ public class SaveCompany implements SaveState{
         }
         int numberOfUnfinishedBills = Integer.valueOf(lines.get(lastStop + 1));
         lastStop++;
-        for (int i = 0, l = lastStop + 1; i < numberOfUnfinishedBills; i++, l += 9) {
+        for (int i = 0, l = lastStop + 1; i < numberOfUnfinishedBills; i++, l += 10) {
             Bill newBill = new Bill(newCompany, UUID.fromString(lines.get(l)));
-            String[] dateOfSaleString = lines.get(l + 1).split("[-.,:\n]");
-            String[] dateOfDeliveryString = lines.get(l + 2).split("[-.,:\n]");
-            String[] dueDateString = lines.get(l + 3).split("[-.,:\n]");
+            newBill.setBillId(Integer.valueOf(lines.get(l + 1)));
+            String[] dateOfSaleString = lines.get(l + 2).split("[-.,:\n]");
+            String[] dateOfDeliveryString = lines.get(l + 3).split("[-.,:\n]");
+            String[] dueDateString = lines.get(l + 4).split("[-.,:\n]");
             try {
                 newBill.addDateOfSale(new GregorianCalendar(Integer.valueOf(dateOfSaleString[0]), Integer.valueOf(dateOfSaleString[1]), Integer.valueOf(dateOfSaleString[2])));
                 newBill.addDateOfDelivery(new GregorianCalendar(Integer.valueOf(dateOfDeliveryString[0]), Integer.valueOf(dateOfDeliveryString[1]), Integer.valueOf(dateOfDeliveryString[2])));
@@ -187,7 +186,7 @@ public class SaveCompany implements SaveState{
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            for (int v = 0, n = l + 5; v < Integer.valueOf(lines.get(l + 4)); v++, n += 2) {
+            for (int v = 0, n = l + 6; v < Integer.valueOf(lines.get(l + 5)); v++, n += 2) {
                 for (Item item : newCompany.getCompanyItems()) {
                     if (item.getItemId().toString().equals(lines.get(n))) {
                         newBill.setItems(item, Integer.valueOf(lines.get(n + 1)));
@@ -209,37 +208,32 @@ public class SaveCompany implements SaveState{
         return newCompany;
     }
 
-    private void writeBill(Bill bill, FileWriter writer) {
-        try {
-            writer.write(System.lineSeparator());
-            writer.write(bill.getBillUUID().toString());
-            writer.write(System.lineSeparator());
-            writer.write(bill.getDateOfDelivery().
-            toZonedDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            writer.write(System.lineSeparator());
+    private void writeBill(Bill bill, FileWriter writer) throws IOException {
+        writer.write(System.lineSeparator());
+        writer.write(bill.getBillUUID().toString());
+        writer.write(System.lineSeparator());
+        writer.write(Integer.toString(bill.getBillId()));
+        writer.write(System.lineSeparator());
+        writer.write(bill.getDateOfDelivery().
+        toZonedDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        writer.write(System.lineSeparator());
             writer.write(bill.getDueDate().
-            toZonedDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        toZonedDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        writer.write(System.lineSeparator());
+        writer.write(bill.getDateOfSale().
+        toZonedDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        writer.write(System.lineSeparator());
+        writer.write(Integer.toString(bill.getItems().keySet().size()));
+        for (Item item : bill.getItems().keySet()) {
             writer.write(System.lineSeparator());
-            writer.write(bill.getDateOfSale().
-            toZonedDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            writer.write(item.getItemId().toString());
             writer.write(System.lineSeparator());
-            writer.write(Integer.toString(bill.getItems().keySet().size()));
-            for (Item item : bill.getItems().keySet()) {
-                writer.write(System.lineSeparator());
-                writer.write(item.getItemId().toString());
-                writer.write(System.lineSeparator());
-                writer.write(Integer.toString(bill.getItems().get(item)));
-            }
-            writer.write(System.lineSeparator());
-            writer.write(bill.getBillCustomer().getBusinessId().toString());
-            writer.write(System.lineSeparator());
-            writer.write(bill.sent ? "true" : "false");
-
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            writer.write(Integer.toString(bill.getItems().get(item)));
         }
+        writer.write(System.lineSeparator());
+        writer.write(bill.getBillCustomer().getBusinessId().toString());
+        writer.write(System.lineSeparator());
+        writer.write(bill.sent ? "true" : "false");
     }
     
 }

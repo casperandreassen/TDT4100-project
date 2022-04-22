@@ -78,6 +78,7 @@ public class CreateBillController extends GenericController implements Controlle
         customerSelect = new ChoiceBox<Customer>(customers);
 
         customerSelect.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @SuppressWarnings("rawtypes")
             public void changed(ObservableValue ov, Number value, Number newValue) {
                 tmpCustomer = customers.get((int) newValue);
             }
@@ -172,6 +173,7 @@ public class CreateBillController extends GenericController implements Controlle
         ObservableList<Item> items = FXCollections.observableArrayList(currentCompany.getCompanyItems());
         selectItem = new ChoiceBox<Item>(items);
         selectItem.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @SuppressWarnings("rawtypes")
             public void changed(ObservableValue ov, Number value, Number newValue) {
                 tmpItem = items.get((int) newValue);
             }
@@ -252,17 +254,20 @@ public class CreateBillController extends GenericController implements Controlle
     public void completeBill() {
         try {
             currentCompany.sendFinishedBill(newBill, currentCompany.getCurrentBillId());
-            currentCompany.setCurrentBillId(currentCompany.getCurrentBillId() + 1);
             goToView("Overview", "Overview.fxml", (Stage) name.getScene().getWindow());
         } catch (IllegalAccessException e) {
-            displayMessage(e.toString());
+            displayMessage("You need to fill out all fields in order to complete a bill.");
         }
     }
     @FXML
     public void saveUnfinishedBill() {
-        if (newBill.minimumLegalState()) {
-            currentCompany.addUnfinishedBill(newBill);
-            goToView("Overview", "Overview.fxml", (Stage) name.getScene().getWindow());
+        try {
+            if (newBill.minimumLegalState()) {
+                currentCompany.addUnfinishedBill(newBill);
+                goToView("Overview", "Overview.fxml", (Stage) name.getScene().getWindow());
+            }   
+        } catch (IllegalAccessException e) {
+            displayMessage("You need to minimum have a customer and an item to save a bill. ");
         }
     }
 

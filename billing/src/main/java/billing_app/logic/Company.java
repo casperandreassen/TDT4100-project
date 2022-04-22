@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-
 import billing_app.items.Bill;
 import billing_app.items.Item;
 
@@ -71,7 +70,7 @@ public class Company extends Business{
             this.companyUnfinishedBills.remove(bill);
             bill.sent = true;
         } else {
-            throw new IllegalStateException("Bill is missing legally required fields.");
+            throw new IllegalAccessException();
         }
     }
 
@@ -131,11 +130,4 @@ public class Company extends Business{
         }
         return total;
     }
-
-
-    public static void main(String[] args) {
-        
-    }
-
-
 }

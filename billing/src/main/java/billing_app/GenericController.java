@@ -1,7 +1,11 @@
 package billing_app;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 
 import billing_app.items.Address;
 import billing_app.items.Bill;
@@ -21,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public abstract class GenericController {
@@ -120,20 +125,32 @@ public abstract class GenericController {
         try {
             tmp.setName(name.getText());
             /* Maybe display some error message here aswell. */
-            Address tmpAdress = new Address();
-            tmpAdress.setAddress(address.getText());
-            tmpAdress.setCity(city.getText());
-            tmpAdress.setPostalCode(postalCode.getText());
-            tmpAdress.setCountry(country.getText());
-            tmp.setAddress(tmpAdress);
+            try {
+                Address tmpAdress = new Address();
+                tmpAdress.setAddress(address.getText());
+                tmpAdress.setCity(city.getText());
+                tmpAdress.setPostalCode(postalCode.getText());
+                tmpAdress.setCountry(country.getText());
+                tmp.setAddress(tmpAdress);
+            } catch (FileNotFoundException e) {
+                displayMessage("Could not find postal code file. This should be located in /billing/store/static");
+            } catch (IOException e) {
+                displayMessage("Error reading file.");
+            } catch (URISyntaxException e) {
+                displayMessage("Error finding file.");
+            }
             try {
                 tmp.setOriganizationalId(new OrganizationalId(orgId.getText()));
             } catch (IllegalArgumentException e) {
-                /* Display some error message here. */
+                displayMessage("Invalid organizational ID");
             }
             if (tmp instanceof Company) {
                 Company tmp1 = (Company) tmp;
-                tmp1.setCurrentBillId(Integer.valueOf(startingBillId.getText()));
+                try {
+                    tmp1.setCurrentBillId(Integer.valueOf(startingBillId.getText()));
+                } catch (NumberFormatException e) {
+                    displayMessage("Current bill id has to be an integer.");
+                }
                 this.currentCompany = tmp1;
             }
             if (tmp instanceof Customer) {
@@ -147,9 +164,8 @@ public abstract class GenericController {
     /* This is kind of a hacky way to do it, should instead ask the class if its legal or not. */
     @FXML
     private void handleOrganizationalIdChange() {
-        String tmpOrgId = orgId.getText();
         try {
-            OrganizationalId tmp = new OrganizationalId(tmpOrgId);
+            new OrganizationalId(orgId.getText());
             legalOrgId.setText("Valid");
         } catch (IllegalArgumentException e) {
             legalOrgId.setText("Invalid");
@@ -158,16 +174,24 @@ public abstract class GenericController {
 
     @FXML
     private void handlePostalCodeInput() {
-        Address companyAddress = new Address();
-        if (postalCode.getText().length() == 4) {
-            String cityName = companyAddress.postalCodes.get(postalCode.getText());
-            if (city != null) {
-                city.setText(cityName);
-                country.setText("NORWAY");
-            } 
-        } else {
-            city.setText("");
-            country.setText("");
+        try {
+            if (postalCode.getText().length() == 4) {
+                Address companyAddress = new Address();
+                String cityName = companyAddress.postalCodes.get(postalCode.getText());
+                if (city != null) {
+                    city.setText(cityName);
+                    country.setText("NORWAY");
+                } 
+            } else {
+                city.setText("");
+                country.setText("");
+            }  
+        } catch (FileNotFoundException e) {
+            displayMessage("Could not locate file.");
+        } catch (IOException e) {
+            displayMessage("Error reading from file.");
+        } catch (URISyntaxException e) {
+
         }
     }
 }

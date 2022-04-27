@@ -12,12 +12,12 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.CreateBillController">
    <children>
       <Label layoutX="50.0" layoutY="24.0" text="Selling company:" />
-      <Label layoutX="50.0" layoutY="101.0" text="Customer">
+      <Label layoutX="56.0" layoutY="91.0" text="Customer">
          <font>
             <Font size="26.0" />
          </font>
       </Label>
-      <Label layoutX="53.0" layoutY="146.0" text="Use exisiting customer" />
+      <Label layoutX="228.0" layoutY="69.0" text="Use exisiting customer" />
       <TextField fx:id="name" layoutX="50.0" layoutY="335.0" prefHeight="27.0" prefWidth="200.0" />
       <Label layoutX="50.0" layoutY="315.0" text="Customer name" />
       <TextField fx:id="orgId" layoutX="50.0" layoutY="390.0" onKeyTyped="#handleOrganizationalIdChange" prefHeight="26.0" prefWidth="200.0" />
@@ -49,9 +49,9 @@
       <Label layoutX="1281.0" layoutY="821.0" text="Total" />
       <Button fx:id="saveBillButton" layoutX="849.0" layoutY="792.0" mnemonicParsing="false" onAction="#saveUnfinishedBill" text="Save progress" />
       <Button fx:id="completeBillButton" layoutX="957.0" layoutY="792.0" mnemonicParsing="false" onAction="#completeBill" text="Complete bill" />
-      <TilePane fx:id="customerChoicePane" layoutX="51.0" layoutY="167.0" prefHeight="67.0" prefWidth="198.0" />
+      <TilePane fx:id="customerChoicePane" layoutX="222.0" layoutY="83.0" prefHeight="67.0" prefWidth="198.0" />
       <Label fx:id="currentCompanyInfo" layoutX="50.0" layoutY="52.0" text="Label" />
-      <Button fx:id="addExistingCustomerButton" layoutX="51.0" layoutY="244.0" mnemonicParsing="false" onAction="#addCustomer" text="Add to bill" />
+      <Button fx:id="addExistingCustomerButton" layoutX="229.0" layoutY="141.0" mnemonicParsing="false" onAction="#addCustomer" text="Add to bill" />
       <Button fx:id="addNewCustomerButton" layoutX="50.0" layoutY="660.0" mnemonicParsing="false" onAction="#addNewCustomer" text="Add new customer" />
       <Label fx:id="customerOnBill" layoutX="847.0" layoutY="24.0" prefHeight="25.0" prefWidth="554.0" text="CUSTOMER INFO" wrapText="true" />
       <Label fx:id="legalOrgId" layoutX="210.0" layoutY="370.0" text="Invalid" textFill="RED" />

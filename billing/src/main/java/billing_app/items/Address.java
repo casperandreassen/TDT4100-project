@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import billing_app.MainApp;
 
+/*  */
 
 public class Address {
 
@@ -22,11 +23,13 @@ public class Address {
     String country;
     public Map<String, String> postalCodes = new HashMap<String, String>();
 
+    /* The constructor just creates the hashmap so that it can be checked for a mach. */
+
     public Address() throws FileNotFoundException, IOException, URISyntaxException {
         createHashMap();
     }
 
-    /* Takes around 4-5 ms to create the hashmap */
+    /* This creates a hashmap so that it can be searched for the actual post code. This provides the functionalty for auto-completion of city and country with Norwgian post codes. It takes around 4-5 ms to create the hashmap so no significant performance decrease. */
     private void createHashMap() throws FileNotFoundException, IOException, URISyntaxException {
         URL pathToFile = MainApp.class.getResource("postnummer.txt");
         BufferedReader reader = new BufferedReader(new FileReader(Paths.get(pathToFile.toURI()).toFile()));
@@ -47,6 +50,7 @@ public class Address {
         return postalCode;
     }
 
+    
     public void setPostalCode(String postalCode) {
         if (postalCodes.get(postalCode) != null) {
             this.postalCode = postalCode;

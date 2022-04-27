@@ -1,11 +1,7 @@
 package billing_app;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,47 +28,50 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/* This controller is for creating new bills */
+
 public class CreateBillController extends GenericController implements ControllerInterface {
 
     @FXML
-    StackPane sellingCompanyInfoPane;
+    private StackPane sellingCompanyInfoPane;
 
     @FXML
-    ChoiceBox<Item> selectItem;
+    private ChoiceBox<Item> selectItem;
 
     @FXML
-    ChoiceBox<Customer> customerSelect;
+    private ChoiceBox<Customer> customerSelect;
     
     @FXML 
-    TextField name, address, city, postalCode, country, orgId, itemName, itemPrice, itemTax; 
+    private TextField name, address, city, postalCode, country, orgId, itemName, itemPrice, itemTax; 
 
     @FXML
-    CheckBox saveCustomer, saveItem;
+    private CheckBox saveCustomer, saveItem;
 
     @FXML
-    VBox itemsOnBill;
+    private VBox itemsOnBill;
     
     @FXML
-    TilePane customerChoicePane, companyItemsContainer;
+    private TilePane customerChoicePane, companyItemsContainer;
 
     @FXML
-    Button addItemButton, addItemBill, saveBillButton, completeBillButton, addExistingCustomerButton, addNewCustomerButton;
+    private Button addItemButton, addItemBill, saveBillButton, completeBillButton, addExistingCustomerButton, addNewCustomerButton;
 
     @FXML
-    Label currentCompanyInfo, customerOnBill, totalWithoutTax, billTotal, totalTax;
+    private Label currentCompanyInfo, customerOnBill, totalWithoutTax, billTotal, totalTax;
 
     @FXML
-    DatePicker dateOfSale, deliveryDate, dueDate;
+    private DatePicker dateOfSale, deliveryDate, dueDate;
 
-    Bill newBill;
+    private Bill newBill;
 
     List<Item> itemsOnDisplay = new ArrayList<Item>();
 
-    Customer tmpCustomer;
-    Item tmpItem;
+    private Customer tmpCustomer;
+    private Item tmpItem;
 
+    /* This method displays all customers assiciated to the current company */
     @FXML
-    public void displayCustomersInChoiceBox() {
+    private void displayCustomersInChoiceBox() {
         customerChoicePane.getChildren().remove(customerSelect);
         ObservableList<Customer> customers = FXCollections.observableArrayList(currentCompany.allCompanyCustomers);
         customerSelect = new ChoiceBox<Customer>(customers);
@@ -86,20 +85,20 @@ public class CreateBillController extends GenericController implements Controlle
         customerChoicePane.getChildren().add(customerSelect);
     }
 
-    /* UUIDS are created automatically for each customer. */
-
+    /* This method is for creating a new customer and adding it to both the bill and the current company */
     @FXML
-    public void addNewCustomer() {
+    private void addNewCustomer() {
         Customer tmp = new Customer(UUID.randomUUID());
-        createBusiness(tmp);
-        newBill.addCustomerToBill(tmp);
-        customerOnBill.setText(newBill.getBillCustomer().toString());
-        displayCustomersInChoiceBox();
+        if (createBusiness(tmp)) {
+            newBill.addCustomerToBill(tmp);
+            customerOnBill.setText(newBill.getBillCustomer().toString());
+            displayCustomersInChoiceBox();
+        }
     }
 
-
+    /* This method is for adding an already existing customer to the bill. */
     @FXML
-    public void addCustomer() {
+    private void addCustomer() {
         if (tmpCustomer != null) {
             newBill.addCustomerToBill(this.tmpCustomer);
             customerOnBill.setText(newBill.getBillCustomer().toString());
@@ -107,9 +106,9 @@ public class CreateBillController extends GenericController implements Controlle
             displayMessage("Missing customer info");
         }
     }
-
+    /* Remvoes the active user from the bill. */
     @FXML
-    public void removeCustomer() {
+    private void removeCustomer() {
         try {
             newBill.removeCustomer();
             customerOnBill.setText("NO CUSTOMER");
@@ -118,8 +117,9 @@ public class CreateBillController extends GenericController implements Controlle
         }
     }
 
+    /* Reders all the items on the bill to the items section. */
     @FXML
-    public void displayBillItems() {
+    private void displayBillItems() {
         itemsOnBill.getChildren().clear();
         for (Item item : newBill.getItems().keySet()) {
             StackPane pane = new StackPane();
@@ -159,6 +159,11 @@ public class CreateBillController extends GenericController implements Controlle
             pane.getChildren().addAll(itemName, numberOfItem, priceOfItem, buttons);
             itemsOnBill.getChildren().add(pane);
         }
+    }
+
+    /* Updates totals for the bill */
+    @FXML
+    private void updateTotals() {
         Double totalBillCost = newBill.getTotalCostOfBill();
         Double totalBillTax = newBill.getTotalTaxOnBill();
 
@@ -167,116 +172,107 @@ public class CreateBillController extends GenericController implements Controlle
         billTotal.setText(String.format("%.2f", totalBillCost));
     }
 
+    /* Displays all items avalible in the company */
     @FXML
-    public void displayAllCompanyItems() {
+    private void displayAllCompanyItems() {
         companyItemsContainer.getChildren().remove(selectItem);
         ObservableList<Item> items = FXCollections.observableArrayList(currentCompany.getCompanyItems());
         selectItem = new ChoiceBox<Item>(items);
         selectItem.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @SuppressWarnings("rawtypes")
             public void changed(ObservableValue ov, Number value, Number newValue) {
+                /* Sets the tmpItem as the item selected. */
                 tmpItem = items.get((int) newValue);
             }
         });
         companyItemsContainer.getChildren().add(selectItem);
     }
 
+    /* Adds the selected item in the choicebox */
     @FXML
-    public void addItemToBill() {
+    private void addItemToBill() {
         if (tmpItem != null) {
             newBill.addItemToBill(tmpItem);
             displayBillItems();
+            updateTotals();
         }
     }
 
+    /* Adds a newly created item to the bill */
     @FXML 
-    public void addNewItemToBill() {
+    private void addNewItemToBill() {
         try {
             Item newItem = new Item(null, itemName.getText(), Double.valueOf(itemPrice.getText()), Double.valueOf(itemTax.getText()));
             currentCompany.addItemToCompany(newItem);
             tmpItem = newItem;
             addItemToBill();
             displayBillItems();
+            updateTotals();
             displayAllCompanyItems();
         } catch (IllegalArgumentException e) {
             displayMessage("Invalid item fields");
         }
     }
 
+    /* The following three methods add dates to the bill. */
     @FXML
-    public void addDateOfSale() {
+    private void addDateOfSale() {
         try {
-            GregorianCalendar dateOs = new GregorianCalendar();
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = df.parse(dateOfSale.getValue().toString());
-            dateOs.setTime(date);
-            newBill.addDateOfSale(dateOs);
+            newBill.addDateOfSale(dateOfSale.getValue().toString());
         } catch (ParseException e) {
-            displayMessage("Date format conversion error");
-        } catch (NullPointerException e) {
-            displayMessage("Missing fields");
+            displayMessage("Error reading date of sale");
         }
     }
 
     @FXML
-    public void addDateOfDelivery() {
+    private void addDateOfDelivery() {
         try {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            GregorianCalendar dateOd = new GregorianCalendar();
-            Date date = df.parse(dateOfSale.getValue().toString());
-            date = df.parse(deliveryDate.getValue().toString());
-            dateOd.setTime(date);
-            newBill.addDateOfDelivery(dateOd);
+            newBill.addDateOfDelivery(deliveryDate.getValue().toString());
         } catch (ParseException e) {
-            displayMessage("Date format conversion error");
-        } catch (NullPointerException e) {
-            displayMessage("Missing fields");
+            displayMessage("Error reading date of delivery");
         }
     }
 
     @FXML
-    public void addDueDate() {
+    private void addDueDate() {
         try {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            GregorianCalendar dueD = new GregorianCalendar();
-            Date date = df.parse(dateOfSale.getValue().toString());
-            date = df.parse(dueDate.getValue().toString());
-            dueD.setTime(date);
-            newBill.addDueDate(dueD);
+            newBill.addDueDate(dueDate.getValue().toString());
         } catch (ParseException e) {
-            displayMessage("Date format conversion error");
-        } catch (NullPointerException e) {
-            displayMessage("Missing fields");
+            displayMessage("Error reading due date");
         }
     }
 
+    /* Completes and sends a bill and goes back to the overview screen. */
     @FXML
-    public void completeBill() {
+    private void completeBill() {
         try {
             currentCompany.sendFinishedBill(newBill, currentCompany.getCurrentBillId());
             goToView("Overview", "Overview.fxml", (Stage) name.getScene().getWindow());
-        } catch (IllegalAccessException e) {
+        } catch (IllegalArgumentException e) {
             displayMessage("You need to fill out all fields in order to complete a bill.");
         }
     }
+
+    /* Saves the already added fields to the bill and saves it as a unfinished bill and goes back to the overview screen. */
     @FXML
-    public void saveUnfinishedBill() {
+    private void saveUnfinishedBill() {
         try {
             if (newBill.minimumLegalState()) {
                 currentCompany.addUnfinishedBill(newBill);
                 goToView("Overview", "Overview.fxml", (Stage) name.getScene().getWindow());
             }   
-        } catch (IllegalAccessException e) {
+        } catch (IllegalArgumentException e) {
             displayMessage("You need to minimum have a customer and an item to save a bill. ");
         }
     }
 
+    /* Exits create bill and does not save what has been done on the bill. */
     @FXML
-    public void exitCreateBill() {
+    private void exitCreateBill() {
         goToView("Overview", "Overview.fxml", (Stage) name.getScene().getWindow());
     }
 
-    @FXML
+    /* Init allows a already edited bill to viewed. If no bill is specified a new one gets created. */
     public void init() {
         if (activeBill != null) {
             this.newBill = activeBill;

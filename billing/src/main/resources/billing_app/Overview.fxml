@@ -11,9 +11,9 @@
       <VBox fx:id="main_vbox" layoutX="18.0" layoutY="62.0" prefHeight="738.0" prefWidth="802.0" style="-fx-border-color: black; -fx-background-color: white;" />
       <Button fx:id="knapp" layoutX="334.0" layoutY="820.0" mnemonicParsing="false" onAction="#nextPage" text="Next " />
       <Button layoutX="259.0" layoutY="820.0" mnemonicParsing="false" onAction="#previousPage" text="Previous" />
-      <Pane fx:id="company_avatar_pane" layoutX="1359.0" layoutY="11.0" prefHeight="70.0" prefWidth="70.0" />
+      <Pane fx:id="company_avatar_pane" layoutX="1286.0" layoutY="14.0" prefHeight="125.0" prefWidth="133.0" />
       <Button layoutX="1311.0" layoutY="800.0" mnemonicParsing="false" onAction="#goToCreateBill" prefHeight="26.0" prefWidth="95.0" text="New bill" />
-      <StackPane fx:id="companyInfoPane" layoutX="1155.0" layoutY="18.0" prefHeight="49.0" prefWidth="217.0" />
+      <StackPane fx:id="companyInfoPane" layoutX="1203.0" layoutY="149.0" prefHeight="49.0" prefWidth="217.0" />
       <Button layoutX="295.0" layoutY="34.0" mnemonicParsing="false" onAction="#showCompletedBills" text="Completed bills" />
       <Button layoutX="407.0" layoutY="34.0" mnemonicParsing="false" onAction="#showUncompletedBills" text="Uncompleted bills" />
       <Label layoutX="972.0" layoutY="335.0" text="Total revenue from sent bills" />
@@ -24,5 +24,6 @@
       <Label fx:id="totalRevenue" layoutX="1212.0" layoutY="335.0" text="Label" />
       <Button layoutX="18.0" layoutY="14.0" mnemonicParsing="false" onAction="#saveCompanyState" text="Save" />
       <Label fx:id="pageLabel" layoutX="320.0" layoutY="801.0" text="1/1" />
+      <Button fx:id="selectFileButton" layoutX="73.0" layoutY="14.0" mnemonicParsing="false" onAction="#loadCompany" text="Load" />
    </children>
 </Pane>

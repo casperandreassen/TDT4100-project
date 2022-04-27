@@ -6,10 +6,10 @@ public class Item {
     private String name; 
     private double price; 
     private double taxOnItem; 
-    private String category;
     private UUID itemID;
 
 
+    /* Constructor for an item. If no UUID is specified (i.e its a new item) a new UUID will be generated, or else the specified UUID will be set. UUID is used to identify the item on save/load. */
     public Item(UUID id, String name, double price, double taxOnItem) {
         if (name != null && price > 0 && taxOnItem > 0) {
             this.name = name; 
@@ -20,7 +20,6 @@ public class Item {
             } else {
                 itemID = UUID.randomUUID();
             }
-
         } else {
             throw new IllegalArgumentException();
         }
@@ -41,10 +40,6 @@ public class Item {
 
     public double getTaxOnItem() {
         return taxOnItem;
-    }
-
-    public String getCategory() {
-        return category;
     }
 
     @Override

@@ -6,6 +6,7 @@ public class OrganizationalId {
 
     private String organizationalId;
 
+    /* Creates the object and checks if the organizational id is valid. */
     public OrganizationalId(String organizationalId) {
         if (isValid(organizationalId)) {
             this.organizationalId = organizationalId;

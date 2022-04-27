@@ -26,39 +26,41 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+
+
 public class OverviewController extends GenericController implements ControllerInterface {
 
     @FXML
-    VBox main_vbox;
+    private VBox main_vbox;
 
     @FXML
-    Label totalWithoutTax, totalTax, totalRevenue, pageLabel;
+    private Label totalWithoutTax, totalTax, totalRevenue, pageLabel;
 
     @FXML
-    Button knapp;
+    private Button knapp;
 
     @FXML
-    Pane root_pane;
+    private Pane root_pane;
 
     @FXML
-    StackPane companyInfoPane;
+    private StackPane companyInfoPane;
 
     @FXML
-    Pane company_avatar_pane;
+    private Pane company_avatar_pane;
 
-    List<Bill> billsOnDisplay = new ArrayList<Bill>();
-    List<ArrayList<Bill>> pages = new ArrayList<ArrayList<Bill>>();
+    /* For keeping track of what bills are on display and on what page. */
+    private List<ArrayList<Bill>> pages = new ArrayList<ArrayList<Bill>>();
     int activePage;
 
 
-
-    public void goToCreateBill() {
+    @FXML
+    private void goToCreateBill() {
         goToView("Create new bill", "CreateBill.fxml", (Stage) root_pane.getScene().getWindow());
     }
 
-
+    /* Tells displayPage to render the next page. */
     @FXML
-    public void nextPage() {
+    private void nextPage() {
         if (activePage < pages.size()) {
             displayPage(pages.get(activePage + 1));
             activePage++;
@@ -66,8 +68,9 @@ public class OverviewController extends GenericController implements ControllerI
         }
     }
 
+    /* Tells displayPage to render the previous page. */
     @FXML
-    public void previousPage() {
+    private void previousPage() {
         if (activePage > 0) {
             displayPage(pages.get(activePage - 1));
             activePage--;
@@ -75,8 +78,9 @@ public class OverviewController extends GenericController implements ControllerI
         }
     }
 
-    /* Add all info to bills and make it clickable */
-    public void displayBillsInVbox(List<Bill> bills) {
+    /* Calculates how many pages are needed and what bills should be on each page. */
+    @FXML
+    private void displayBillsInVbox(List<Bill> bills) {
         pages.clear();
         int maxPageNumber;
         if (bills.size() > 7) {
@@ -101,6 +105,8 @@ public class OverviewController extends GenericController implements ControllerI
         }
     }
 
+
+    /* Renderes a collection of bills in the bills section. */
     private void displayPage(List<Bill> bills) {
         main_vbox.getChildren().clear();
         for (Bill bill : bills) {
@@ -118,6 +124,7 @@ public class OverviewController extends GenericController implements ControllerI
                 totalCost = new Label("Total: " + String.format("%.2f", bill.getTotalCostOfBill()));
                 billNumber = new Label("Bill number: " + String.format("%s", bill.getBillId()));
             } catch (NullPointerException e) {
+                displayMessage(e.toString());
                 customer = new Label("Customer: N/A");
                 totalMva = new Label("Tax: 0.0");
                 totalCost = new Label("Total: 0.0");
@@ -131,6 +138,7 @@ public class OverviewController extends GenericController implements ControllerI
             }
 
             Label dueDate = new Label("Due date: " + date);
+            /* If the bill is not completed we add a edit button to allow the user to continue work. */
             if (!bill.sent) {
                 Button typeButton = new Button("Edit");
                 typeButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -141,7 +149,6 @@ public class OverviewController extends GenericController implements ControllerI
             });
                 StackPane.setAlignment(typeButton, Pos.CENTER_LEFT);
                 pane.getChildren().add(typeButton);
-
             }
             StackPane.setAlignment(customer, Pos.TOP_LEFT);
             StackPane.setAlignment(totalMva, Pos.CENTER_RIGHT);
@@ -155,16 +162,18 @@ public class OverviewController extends GenericController implements ControllerI
 
     }
 
+    /* Lets the user switch between sent and uncompleted bills. */
     @FXML
     public void showUncompletedBills() {
-        displayBillsInVbox(currentCompany.companyUnfinishedBills);
+        displayBillsInVbox(currentCompany.getCompanyUnfinishedBills());
     }
 
     @FXML
     public void showCompletedBills() {
-        displayBillsInVbox(currentCompany.companySentBills);
+        displayBillsInVbox(currentCompany.getCompanySentBills());
     }
 
+    /* Uses the saveCompany class to save the current company state and uses selectSaceLocationHandler to get the path to save to. */
     @FXML
     public void saveCompanyState() {
         SaveCompany save = new SaveCompany();
@@ -175,22 +184,22 @@ public class OverviewController extends GenericController implements ControllerI
         }
     }
 
-    private String selectSaveLocationHandler() {
+    /* Opens a filechooser so that the user can select where the savefile should be located. */
+    private File selectSaveLocationHandler() {
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select where to save");
         File selectedLocation = fileChooser.showSaveDialog(stage);
-        return Paths.get(selectedLocation.getAbsolutePath()).toString() + ".txt";
+        return new File(Paths.get(selectedLocation.getAbsolutePath()).toString() + ".txt");
     }
 
-
-    @FXML
+    /* Initiazies the overview screen with bills, image, company info and totals. */
     public void init() {
         displayBillsInVbox(currentCompany.companySentBills);
         try {
             ImageView company_avatar = new ImageView(new Image(currentCompany.getCompanyLogoFileStream()));
-            company_avatar.setFitHeight(50); 
-            company_avatar.setFitWidth(60);
+            company_avatar.setFitHeight(100); 
+            company_avatar.setFitWidth(100);
             company_avatar_pane.getChildren().add(company_avatar);
             
         } catch (FileNotFoundException e) {
@@ -213,6 +222,4 @@ public class OverviewController extends GenericController implements ControllerI
         companyName.setText(currentCompany.getName());
         companyAddress.setText(currentCompany.getAddress().toString());
     }
-
-
 }

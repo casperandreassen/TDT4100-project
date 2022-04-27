@@ -9,6 +9,11 @@
     <packaging>jar</packaging>
  
     <name>tdt4100_v2022_prosjekt_boilerplate</name>
+
+	<properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 	
 
    <dependencies>
@@ -25,19 +30,7 @@
         <artifactId>junit-jupiter-engine</artifactId>
         <version>5.7.0</version>
 	</dependency>
-
-	<dependency>
-    	<groupId>com.itextpdf</groupId>
-    	<artifactId>itextpdf</artifactId>
-    	<version>5.5.13.3</version>
-	</dependency>
-	<dependency>
-    	<groupId>org.apache.pdfbox</groupId>
-    	<artifactId>pdfbox</artifactId>
-    	<version>3.0.0-RC1</version>
-	</dependency>
-  </dependencies>
-
+	</dependencies>
   <build>
 	<plugins>
 	  <plugin>

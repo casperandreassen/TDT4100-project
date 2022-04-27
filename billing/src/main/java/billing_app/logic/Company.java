@@ -2,12 +2,17 @@ package billing_app.logic;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import billing_app.MainApp;
 import billing_app.items.Bill;
 import billing_app.items.Item;
+import billing_app.saving.SaveCompany;
 
 public class Company extends Business{
 
@@ -18,6 +23,7 @@ public class Company extends Business{
     public List<Bill> companySentBills;
     public List<Bill> companyUnfinishedBills;
     
+    /* Sets UUID if none is specified, else one is generated. Also instanciates the lists used in this class. */
     public Company(UUID id) {
         if (id == null) {
             setId(UUID.randomUUID());
@@ -30,6 +36,7 @@ public class Company extends Business{
         this.companyUnfinishedBills = new ArrayList<Bill>();
     }
     
+    /* Adds a customer to the company, if the customer already is in the company it throws a illegalargumentexception. */
     public void addCustomerToCompany(Customer customer) throws IllegalArgumentException {
         if(!this.allCompanyCustomers.contains(customer)) {
             this.allCompanyCustomers.add(customer);
@@ -42,7 +49,8 @@ public class Company extends Business{
         return this.allCompanyCustomers;
     }
 
-    public void addItemToCompany(Item item) {
+    /* Adds a item to the company, if the item already exists an illegalargumentexception is thrown. */
+    public void addItemToCompany(Item item) throws IllegalArgumentException {
         if (!this.allCompanyItems.contains(item)) {
             this.allCompanyItems.add(item);
         } else {
@@ -62,27 +70,26 @@ public class Company extends Business{
         }
     }
 
-    public void sendFinishedBill(Bill bill, int billId) throws IllegalAccessException {
+    /* Adds a finished bill and checks if the bill is in a legal state. Passes the illegalargumentexception if not. */
+    public void sendFinishedBill(Bill bill, int billId) throws IllegalArgumentException {
         if (bill.legalState()) {
             bill.setBillId(billId);
             this.currentBillId++;
             this.companySentBills.add(bill);
             this.companyUnfinishedBills.remove(bill);
             bill.sent = true;
-        } else {
-            throw new IllegalAccessException();
         }
     }
 
-    public Collection<Bill> getCompanySentBills() {
+    public List<Bill> getCompanySentBills() {
         return this.companySentBills;
     }
 
-    public Collection<Bill> getCompanyUnfinishedBills() {
+    public List<Bill> getCompanyUnfinishedBills() {
         return this.companyUnfinishedBills;
     }
 
-
+    /* Returns a FileInputStream for the logo of the company so that it can be used in the UI. */
     public FileInputStream getCompanyLogoFileStream() throws FileNotFoundException {
         return new FileInputStream(this.companyLogoPath);
     }
@@ -107,6 +114,7 @@ public class Company extends Business{
         return this.allCompanyItems;
     }
 
+    /* Calculates the company total revenue. Delegates part of the calculation to the bill object's. */
     public double calculateTotalRevenue() {
         double total = 0;
         for (Bill bill : companySentBills) {
@@ -115,6 +123,7 @@ public class Company extends Business{
         return total;
     }
 
+    /* Calculates the company total tax. Delegates part of the calculation to the bill objects. */
     public double calculateTotalTax() {
         double totalTax = 0; 
         for (Bill bill : companySentBills) {
@@ -123,6 +132,7 @@ public class Company extends Business{
         return totalTax;
     }
 
+    /* Calculates the company total revenue without tax and delegates part of the calculation to the bill objects. */
     public double calculateTotalRevenueWithoutTax() {
         double total = 0; 
         for (Bill bill : companySentBills) {
@@ -130,4 +140,17 @@ public class Company extends Business{
         }
         return total;
     }
+
+
+    /* Validates that the logo is legal, and if no logo is specified it sets the default avatar as the logo. */
+    public String getLogoPath(String logoPath) throws URISyntaxException {
+        if (logoPath != null) {
+            String[] acceptedFiles = {"jpg", "png", "jpeg"};
+            String fileFormat = SaveCompany.getFileType(logoPath);
+            if (Arrays.asList(acceptedFiles).contains(fileFormat)) {
+                return logoPath;
+            } 
+        } 
+        return MainApp.class.getResource("default_company_avatar.jpg").getPath();
+        }
 }

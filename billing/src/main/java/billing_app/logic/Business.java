@@ -5,6 +5,8 @@ import java.util.UUID;
 import billing_app.items.Address;
 import billing_app.items.OrganizationalId;
 
+/* Aim for this abstract class is to consolidate similar methods in both Customer and Company. */
+
 public abstract class Business {
     
     String name;
@@ -12,6 +14,7 @@ public abstract class Business {
     Address address;
     UUID businessId;
 
+    /* UUID is used for identifying the object on save/load. */
     public void setId(UUID id) {
         this.businessId = id;
     }
@@ -46,7 +49,6 @@ public abstract class Business {
     public UUID getBusinessId() {
         return this.businessId;
     }
-
 
     @Override
     public String toString() {

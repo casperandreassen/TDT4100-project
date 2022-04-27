@@ -8,64 +8,64 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="210.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.CreateCompanyController">
    <children>
-      <Label layoutX="33.0" layoutY="62.0" text="Create new company">
+      <Label layoutX="45.0" layoutY="62.0" text="Create new company">
          <font>
             <Font name="Geeza Pro Regular" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="name" layoutX="27.0" layoutY="105.0" />
-      <TextField fx:id="orgId" layoutX="25.0" layoutY="149.0" onKeyTyped="#handleOrganizationalIdChange" />
-      <TextField fx:id="startingBillId" layoutX="24.0" layoutY="193.0" />
-      <TextField fx:id="address" layoutX="25.0" layoutY="236.0" />
-      <TextField fx:id="postalCode" layoutX="26.0" layoutY="275.0" onKeyTyped="#handlePostalCodeInput" />
-      <Label layoutX="28.0" layoutY="93.0" text="Company name">
+      <TextField fx:id="name" layoutX="25.0" layoutY="105.0" />
+      <TextField fx:id="orgId" layoutX="25.0" layoutY="150.0" onKeyTyped="#handleOrganizationalIdChange" />
+      <TextField fx:id="startingBillId" layoutX="25.0" layoutY="195.0" />
+      <TextField fx:id="address" layoutX="25.0" layoutY="240.0" />
+      <TextField fx:id="postalCode" layoutX="25.0" layoutY="285.0" onKeyTyped="#handlePostalCodeInput" />
+      <Label layoutX="25.0" layoutY="95.0" text="Company name">
          <font>
             <Font size="9.0" />
          </font>
       </Label>
-      <Label layoutX="25.0" layoutY="138.0" text="OrganizationalID">
+      <Label layoutX="25.0" layoutY="140.0" text="OrganizationalID">
          <font>
             <Font size="9.0" />
          </font>
       </Label>
-      <Label layoutX="27.0" layoutY="182.0" text="Current starting bill-ID">
+      <Label layoutX="25.0" layoutY="185.0" text="Current starting bill-ID">
          <font>
             <Font size="9.0" />
          </font>
       </Label>
-      <Label layoutX="27.0" layoutY="225.0" text="Address">
+      <Label layoutX="25.0" layoutY="230.0" text="Address">
          <font>
             <Font size="9.0" />
          </font>
       </Label>
-      <Label layoutX="28.0" layoutY="263.0" text="Postal code">
+      <Label layoutX="25.0" layoutY="275.0" text="Postal code">
          <font>
             <Font size="9.0" />
          </font>
       </Label>
-      <TextField fx:id="city" layoutX="27.0" layoutY="316.0" />
-      <TextField fx:id="country" layoutX="27.0" layoutY="357.0" />
-      <Label layoutX="28.0" layoutY="307.0" text="City">
+      <TextField fx:id="city" layoutX="25.0" layoutY="330.0" />
+      <TextField fx:id="country" layoutX="25.0" layoutY="375.0" />
+      <Label layoutX="25.0" layoutY="320.0" text="City">
          <font>
             <Font size="9.0" />
          </font>
       </Label>
-      <Label layoutX="29.0" layoutY="347.0" text="Country">
+      <Label layoutX="25.0" layoutY="365.0" text="Country">
          <font>
             <Font size="9.0" />
          </font>
       </Label>
-      <Label layoutX="28.0" layoutY="390.0" text="Select logo">
+      <Label layoutX="25.0" layoutY="410.0" text="Select logo">
          <font>
             <Font size="9.0" />
          </font>
       </Label>
-      <Button fx:id="selectFileButton" layoutX="146.0" layoutY="386.0" mnemonicParsing="false" onAction="#handleLogoSelect" text="Choose">
+      <Button fx:id="selectFileButton" layoutX="140.0" layoutY="410.0" mnemonicParsing="false" onAction="#handleLogoSelect" text="Choose">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="createCompany" layoutX="48.0" layoutY="431.0" mnemonicParsing="false" onAction="#createCompany" text="Create Company" />
+      <Button fx:id="createCompany" layoutX="45.0" layoutY="440.0" mnemonicParsing="false" onAction="#createCompany" text="Create Company" />
       <Label fx:id="legalOrgId" layoutX="154.0" layoutY="138.0" prefHeight="8.0" prefWidth="33.0" text="Invalid" textFill="RED">
          <font>
             <Font size="9.0" />

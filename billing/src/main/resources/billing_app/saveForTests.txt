@@ -1,0 +1,34 @@
+Fiskermann AS
+eb7667a1-c555-432b-8a97-5f0600b7d909
+788957661
+Pumpeparken 23
+3294
+STAVERN
+NORWAY
+/Users/casper/code/TDT4100-project/external-content.duckduckgo.com.jpg
+326
+1
+2805f29a-9dab-41ca-9683-ec7f870ac203
+Kveite 3kg
+230.0
+12.0
+1
+9d8e21a1-82f5-4bd9-a955-72036ffc2bd2
+Fiskebutikk1 AS
+949160440
+Brygga 3
+3294
+STAVERN
+NORWAY
+1
+6a4b3d89-3647-4e55-973d-bc82f3094510
+325
+2022-04-29
+2022-05-06
+2022-04-22
+1
+2805f29a-9dab-41ca-9683-ec7f870ac203
+3
+9d8e21a1-82f5-4bd9-a955-72036ffc2bd2
+true
+0

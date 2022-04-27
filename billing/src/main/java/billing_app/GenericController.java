@@ -6,17 +6,18 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
-
 import billing_app.items.Address;
 import billing_app.items.Bill;
 import billing_app.items.OrganizationalId;
 import billing_app.logic.Business;
 import billing_app.logic.Company;
 import billing_app.logic.Customer;
+import billing_app.saving.SaveCompany;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.LoadException;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,21 +29,28 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/* GenericController is an abstact controller class that contains methods and attributes that are shared between the controllers. */
+
 public abstract class GenericController {
 
     @FXML
-    TextField name, address, city, postalCode, country, orgId, startingBillId;
+    private TextField name, address, city, postalCode, country, orgId, startingBillId;
 
     @FXML
-    CheckBox saveCustomer;
+    private CheckBox saveCustomer;
 
     @FXML
-    Label legalOrgId;
+    private Label legalOrgId;
+
+    @FXML
+    private Button selectFileButton;
     
-    Company currentCompany;
-    Bill activeBill;
-    Stage prevStage;
+    public Company currentCompany;
+    public Bill activeBill;
+    public Stage prevStage;
 
+    /* displayMessage is for displaying error or other relevant messages to the user */
+    
     public void displayMessage(String errorMessage) {
         Stage stage = new Stage();
         StackPane root = new StackPane();
@@ -74,11 +82,13 @@ public abstract class GenericController {
         this.activeBill = bill; 
     }
 
+    /* Method for setting the previous stage for closing when switching between windows. */
     public void setPrevStage(Stage stage) {
         this.prevStage = stage; 
     }
 
 
+    /* goToView allows controllers that implement ControllerInterface and extends GenericController to switch between windows and keep track of the current company while switching between windows. It also calls the method init that is defined in the interface. */
     public void goToView(String title, String view, Stage prevStage) {
         try {
             URL fileUrl = getClass().getResource(view);
@@ -98,6 +108,7 @@ public abstract class GenericController {
         }
     }
 
+    /* This goToView is just for allowing editing of a bill. */
     public void goToView(String title, String view, Stage prevStage, Bill editBill) {
         try {
             URL fileUrl = getClass().getResource(view);
@@ -120,11 +131,12 @@ public abstract class GenericController {
         }
     }
 
+    /* createBusiness takes all the data that is shared between a customer and a company and makes either a company or customer based on what type is passed in. */
     @FXML
-    public void createBusiness(Business tmp) {
+    public boolean createBusiness(Business tmp) {
+        boolean legal = true;
         try {
             tmp.setName(name.getText());
-            /* Maybe display some error message here aswell. */
             try {
                 Address tmpAdress = new Address();
                 tmpAdress.setAddress(address.getText());
@@ -142,6 +154,7 @@ public abstract class GenericController {
             try {
                 tmp.setOriganizationalId(new OrganizationalId(orgId.getText()));
             } catch (IllegalArgumentException e) {
+                legal = false;
                 displayMessage("Invalid organizational ID");
             }
             if (tmp instanceof Company) {
@@ -150,18 +163,20 @@ public abstract class GenericController {
                     tmp1.setCurrentBillId(Integer.valueOf(startingBillId.getText()));
                 } catch (NumberFormatException e) {
                     displayMessage("Current bill id has to be an integer.");
+                    legal = false;
                 }
-                this.currentCompany = tmp1;
+                if (legal) this.currentCompany = tmp1;
             }
             if (tmp instanceof Customer) {
-                this.currentCompany.allCompanyCustomers.add((Customer) tmp);
+                if (legal) this.currentCompany.allCompanyCustomers.add((Customer) tmp);
             }
         } catch (IllegalArgumentException e) {
             displayMessage(e.toString());
         }
+        return legal;
     }
 
-    /* This is kind of a hacky way to do it, should instead ask the class if its legal or not. */
+    /* Mothod for displaying a visual aid if the Organizational id is valid or not when the user types it in. */
     @FXML
     private void handleOrganizationalIdChange() {
         try {
@@ -172,6 +187,7 @@ public abstract class GenericController {
         }   
     }
 
+    /* Method for giving "autocomplete" on city and country based on the postal code entered. */
     @FXML
     private void handlePostalCodeInput() {
         try {
@@ -193,5 +209,25 @@ public abstract class GenericController {
         } catch (URISyntaxException e) {
 
         }
+    }
+
+    /* Uses the saveCompany method loadCompanyFromFile to load a exsisting company and goes to the overview screen. It lets the user select the savefile it wants to use. Displays appropriate messages based on the exception thrown.*/
+    @FXML
+    private void loadCompany() {
+            Stage stage = new Stage();
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select savefile");
+            File selectedFile = fileChooser.showOpenDialog(stage);
+            SaveCompany load = new SaveCompany();
+            try {
+                currentCompany = load.loadCompanyFromFile(Paths.get(selectedFile.getAbsolutePath()).toFile());
+                goToView("Overview", "Overview.fxml", (Stage) selectFileButton.getScene().getWindow());
+            } catch (FileNotFoundException e) {
+                displayMessage("Could not locate savefile");
+            } catch (LoadException e) {
+                displayMessage("Error reading from savefile");
+            } catch (IllegalArgumentException e) {
+                displayMessage("Invalid file format.");
+            }
     }
 }

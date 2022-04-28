@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="billing_app.ViewBillController">
+   <children>
+      <Label layoutX="30.0" layoutY="14.0" text="Selling company:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
+      <Label layoutX="561.0" layoutY="767.0" text="Total without tax" />
+      <Label layoutX="628.0" layoutY="787.0" text="Tax" />
+      <Label layoutX="625.0" layoutY="809.0" text="Total" />
+      <Label fx:id="currentCompanyInfo" layoutX="30.0" layoutY="32.0" text="Label" />
+      <Label fx:id="customerOnBill" layoutX="30.0" layoutY="70.0" prefHeight="25.0" prefWidth="554.0" text="CUSTOMER INFO" wrapText="true" />
+      <Label fx:id="totalWithoutTax" layoutX="670.0" layoutY="767.0" text="Label" />
+      <Label fx:id="totalTax" layoutX="671.0" layoutY="787.0" text="Label" />
+      <Label fx:id="billTotal" layoutX="671.0" layoutY="810.0" text="Label" />
+      <Label layoutX="30.0" layoutY="51.0" text="Customer:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
+      <Button layoutX="27.0" layoutY="805.0" mnemonicParsing="false" onAction="#exitCreateBill" text="EXIT" />
+      <VBox fx:id="itemsOnBill" layoutX="96.0" layoutY="104.0" prefHeight="650.0" prefWidth="554.0" style="-fx-background-color: white; -fx-border-color: black;" />
+      <Label layoutX="100.0" layoutY="759.0" text="Bill number:" />
+      <Label fx:id="billNumber" layoutX="200.0" layoutY="759.0" text="BILLNUMBER" />
+      <Label layoutX="100.0" layoutY="779.0" text="Date of sale: " />
+      <Label layoutX="100.0" layoutY="801.0" text="Date of delivery:" />
+      <Label layoutX="100.0" layoutY="819.0" text="Due date: " />
+      <Label fx:id="dateOfSale" layoutX="200.0" layoutY="779.0" text="DATEOFSALE" />
+      <Label fx:id="dateOfDelivery" layoutX="200.0" layoutY="801.0" text="Label" />
+      <Label fx:id="dueDate" layoutX="200.0" layoutY="819.0" text="Label" />
+   </children>
+</Pane>

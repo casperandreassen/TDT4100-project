@@ -71,7 +71,7 @@ public abstract class GenericController {
         root.getChildren().addAll(message, okButton);
         stage.setScene(new Scene(root));
         stage.show();
-        
+        stage.isFocused();
     }
 
     public void setCompany(Company company) {

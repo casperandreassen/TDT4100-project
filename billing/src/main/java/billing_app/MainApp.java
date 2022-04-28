@@ -26,5 +26,5 @@ public class MainApp extends Application {
         Scene scene = new Scene(pane);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
+    } 
 }

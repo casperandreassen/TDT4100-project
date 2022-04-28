@@ -139,7 +139,16 @@ public class OverviewController extends GenericController implements ControllerI
 
             Label dueDate = new Label("Due date: " + date);
             /* If the bill is not completed we add a edit button to allow the user to continue work. */
-            if (!bill.sent) {
+            if (bill.sent) {
+                Button typeButton = new Button("View");
+                typeButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    goToView("View bill", "viewBill.fxml", (Stage) main_vbox.getScene().getWindow(), bill);
+                }});
+                StackPane.setAlignment(typeButton, Pos.CENTER_LEFT);
+                pane.getChildren().add(typeButton);
+            } else {
                 Button typeButton = new Button("Edit");
                 typeButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override

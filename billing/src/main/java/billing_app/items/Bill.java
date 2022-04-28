@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import billing_app.logic.Company;
 import billing_app.logic.Customer;
@@ -135,7 +137,6 @@ public class Bill {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date date = df.parse(dueDate);
         this.dueDate.setTime(date);
-       
     }
 
     public GregorianCalendar getDueDate() {
@@ -144,7 +145,6 @@ public class Bill {
         }
         return this.dueDate;
     }
-
 
     public Customer getBillCustomer() {
         return this.customer;
@@ -181,23 +181,20 @@ public class Bill {
         }
     }
 
-
     /* Calculates the total cost of the entire bill. */
     public double getTotalCostOfBill() {
-        double totalCost = 0;
-        for (Item item : itemsOnBill.keySet()) {
-            totalCost += item.getPrice() * itemsOnBill.get(item);
+        double total = 0;
+        Iterator<Item> items = itemsOnBill.keySet().iterator();
+        while (items.hasNext()) {
+            Item item = items.next();
+            total += item.getPrice() * itemsOnBill.get(item);
         }
-        return totalCost;
+        return total;
     }
 
     /* Calculates the total tax on the bill. */
     public double getTotalTaxOnBill() {
-        double totalTax = 0;
-        for (Item item : itemsOnBill.keySet()) {
-            totalTax += (item.getPrice() * itemsOnBill.get(item)) * (item.getTaxOnItem() / 100);
-        }
-        return totalTax;
+        return itemsOnBill.keySet().stream().map(item -> item.getPrice() * itemsOnBill.get(item) * (item.getTaxOnItem() / 100)).reduce(0.0, (a, b) -> a + b);
     }
 
     public Company getBillCompany() {

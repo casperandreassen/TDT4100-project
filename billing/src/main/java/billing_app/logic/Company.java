@@ -116,29 +116,17 @@ public class Company extends Business{
 
     /* Calculates the company total revenue. Delegates part of the calculation to the bill object's. */
     public double calculateTotalRevenue() {
-        double total = 0;
-        for (Bill bill : companySentBills) {
-            total += bill.getTotalCostOfBill();
-        }
-        return total;
+        return companySentBills.stream().map(bill -> bill.getTotalCostOfBill()).reduce(0.0, (a, b) -> a + b);
     }
 
     /* Calculates the company total tax. Delegates part of the calculation to the bill objects. */
     public double calculateTotalTax() {
-        double totalTax = 0; 
-        for (Bill bill : companySentBills) {
-            totalTax += bill.getTotalTaxOnBill();
-        }
-        return totalTax;
+        return companySentBills.stream().map(bill -> bill.getTotalTaxOnBill()).reduce(0.0, (a, b) -> a + b);
     }
 
     /* Calculates the company total revenue without tax and delegates part of the calculation to the bill objects. */
     public double calculateTotalRevenueWithoutTax() {
-        double total = 0; 
-        for (Bill bill : companySentBills) {
-            total += bill.getTotalCostOfBill() - bill.getTotalTaxOnBill();
-        }
-        return total;
+        return companySentBills.stream().map(bill -> bill.getTotalCostOfBill() - bill.getTotalTaxOnBill()).reduce(0.0, (a, b) -> a + b); 
     }
 
 

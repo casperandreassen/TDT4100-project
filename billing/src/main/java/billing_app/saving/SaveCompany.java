@@ -63,7 +63,7 @@ public class SaveCompany implements SaveState{
     Number of the item above 
     UUID of the customer attached to the bill (Same logic as with the items.)
     true/false if the bill is sent or not.
-    the 11 steps above repeated for the unsent bills.
+    the 11 steps above repeated for all the unsent bills.
      */
 
 
@@ -194,7 +194,7 @@ public class SaveCompany implements SaveState{
             /* Reads all the sent bills. */
             int numberOfSentBills = Integer.valueOf(lines.get(lastStop + 1));
             lastStop++;
-            for (int i = 0, l = lastStop + 1; i < numberOfSentBills; i++, l += 10) {
+            for (int i = 0, l = lastStop + 1; i < numberOfSentBills; i++) {
                 Bill newBill = new Bill(newCompany, UUID.fromString(lines.get(l)));
                 newBill.setBillId(Integer.valueOf(lines.get(l + 1)));
                 newBill.addDateOfSale(lines.get(l + 2));
@@ -204,7 +204,6 @@ public class SaveCompany implements SaveState{
                     for (Item item : newCompany.getCompanyItems()) {
                         if (item.getItemId().toString().equals(lines.get(n))) {
                             newBill.setItems(item, Integer.valueOf(lines.get(n + 1)));
-                            continue;
                         }
                     }
                     lastStop = n + 1;
@@ -218,6 +217,7 @@ public class SaveCompany implements SaveState{
                 newBill.sent = lines.get(lastStop + 2).equals("true") ? true : false;
                 newCompany.addSentBill(newBill);
                 lastStop += 2;
+                l = lastStop + 1;
             }
             int numberOfUnfinishedBills = Integer.valueOf(lines.get(lastStop + 1));
             lastStop++;
@@ -233,7 +233,6 @@ public class SaveCompany implements SaveState{
                     for (Item item : newCompany.getCompanyItems()) {
                         if (item.getItemId().toString().equals(lines.get(n))) {
                             newBill.setItems(item, Integer.valueOf(lines.get(n + 1)));
-                            break;
                         }
                     }
                     lastStop = n + 1;
@@ -257,7 +256,9 @@ public class SaveCompany implements SaveState{
 
     /* Extracts the file extention of the file. Throws NoSuchElementException if no extention is found. Returns the string representation of the extention after the last "." */
     public static String getFileType(String path) throws NoSuchElementException {
-        Optional<String> extention = Optional.ofNullable(path).filter(s -> s.contains(".")).map(s -> s.substring((path.lastIndexOf(".") + 1)));
+        Optional<String> extention = Optional.ofNullable(path)
+            .filter(s -> s.contains("."))
+            .map(s -> s.substring((path.lastIndexOf(".") + 1)));
         return extention.get();
     }
 
